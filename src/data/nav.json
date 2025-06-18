@@ -1,0 +1,129 @@
+{
+  "auth": [
+    {
+      "title": "Пользователи",
+      "content": [
+        {
+          "icon": "mdi-account-group",
+          "label": "Список пользователей",
+          "to": "/auth",
+          "name": "users-list"
+        },
+        {
+          "icon": "mdi-check-all",
+          "label": "Список ролей",
+          "to": "/auth/roles",
+          "name": "users-roles-list"
+        }
+      ]
+    }
+  ],
+  "employees": [
+    {
+      "title": "Главная",
+      "content": [
+        {
+          "icon": "mdi-account-group",
+          "label": "Список сотрудников",
+          "to": "/employees",
+          "name": "employees-list"
+        },
+        {
+          "icon": "mdi-calendar-account",
+          "label": "Календарь",
+          "to": "/employees/calendar",
+          "name": "employees-calendar"
+        },
+        {
+          "icon": "mdi-book-alphabet",
+          "label": "Словарь",
+          "to": "/employees/dictionary",
+          "name": "employees-dictionary"
+        }
+      ]
+    }
+  ],
+  "ossa": [
+    {
+      "title": "Главная",
+      "content": [
+        {
+          "icon": "mdi-solar-panel",
+          "label": "Последние звонки",
+          "to": "/ossa",
+          "name": "home"
+        },
+        {
+          "icon": "mdi-calendar-text-outline",
+          "label": "План работы",
+          "to": "/ossa/work-plan",
+          "name": "work-plan"
+        },
+        {
+          "icon": "mdi-phone",
+          "label": "Список звонков",
+          "to": "/ossa/calls",
+          "name": "calls"
+        },
+        {
+          "icon": "mdi-office-building",
+          "label": "Члены СРО",
+          "to": "/ossa/agent-list",
+          "name": "agent-list"
+        },
+        {
+          "icon": "mdi-account-arrow-right",
+          "label": "График звонков специалистов",
+          "to": "/ossa/event-do-graphic",
+          "name": "event-do-graphic"
+        },
+        {
+          "icon": "mdi-signal-cellular-3",
+          "label": "Графики звонков",
+          "content": [
+            {
+              "label": "По часам",
+              "to": "/ossa/calls-graphic",
+              "name": "calls-graphic"
+            },
+            {
+              "label": "По специалистам",
+              "to": "/ossa/calls-operator",
+              "name": "calls-operator"
+            },
+            {
+              "label": "По СРО",
+              "to": "/ossa/calls-sro",
+              "name": "calls-sro"
+            },
+            {
+              "label": "По типам связи",
+              "to": "/ossa/calls-hourly-by-type",
+              "name": "calls-hourly-by-type"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "mailer": [
+    {
+      "title": "Главная",
+      "content": [
+        {
+          "icon": "mdi-email-multiple",
+          "label": "Список рассылок",
+          "to": "/mailer",
+          "name": "package-list"
+        },
+        {
+          "icon": "mdi-send-clock",
+          "label": "Расписания",
+          "to": "/mailer/schedule",
+          "name": "mailer-sro-list"
+        }
+      ]
+    }
+  ]
+}
+

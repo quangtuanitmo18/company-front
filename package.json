@@ -1,0 +1,37 @@
+{
+  "name": "personal-front",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@schedule-x/calendar-controls": "^2.26.0",
+    "@schedule-x/event-modal": "^2.14.3",
+    "@schedule-x/events-service": "^2.15.0",
+    "@schedule-x/theme-default": "^2.14.3",
+    "@schedule-x/vue": "^2.12.2",
+    "@vuepic/vue-datepicker": "^11.0.1",
+    "axios": "^1.7.9",
+    "chart.js": "^4.4.7",
+    "chartjs-plugin-datalabels": "^2.2.0",
+    "jwt-decode": "^4.0.0",
+    "maska": "^2.1.11",
+    "path": "^0.12.7",
+    "vue": "^3.5.13",
+    "vue-chartjs": "^5.3.2",
+    "vue-cropperjs": "^5.0.0",
+    "vue-router": "^4.5.0",
+    "vuetify": "^3.7.7",
+    "vuex": "^4.1.0"
+  },
+  "devDependencies": {
+    "@mdi/font": "^7.4.47",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "sass": "^1.83.1",
+    "vite": "^6.0.5"
+  }
+}

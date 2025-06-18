@@ -1,0 +1,3 @@
+<template>
+  Call view
+</template>

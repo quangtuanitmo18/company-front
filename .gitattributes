@@ -1,0 +1,16 @@
+/dev-tools export-ignore
+/documentation export-ignore
+/.vscode export-ignore
+/.idea export-ignore
+
+.env export-ignore
+.env.local export-ignore
+.gitignore  export-ignore
+.gitattributes export-ignore
+README.md export-ignore
+
+.prettierignore export-ignore
+.prettierrc export-ignore
+eslint.config.js export-ignore
+.editorconfig export-ignore
+jsconfig.json export-ignore

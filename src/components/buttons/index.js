@@ -1,0 +1,5 @@
+export { default as BtnSecondary } from "./BtnSecondary.vue"
+export { default as BtnPrimary } from "./BtnPrimary.vue"
+export { default as BtnIcon } from "./BtnIcon.vue"
+export { default as BtnSubmitWarning } from "./BtnSubmitWarning.vue"
+export { default as BtnDropdown } from "./BtnDropdown.vue"
