@@ -121,9 +121,14 @@
           "label": "Расписания",
           "to": "/mailer/schedule",
           "name": "mailer-sro-list"
+        },
+        {
+          "icon": "mdi-calendar-account",
+          "label": "Календарь",
+          "to": "/mailer/calendar",
+          "name": "mailer-calendar"
         }
       ]
     }
   ]
 }
-

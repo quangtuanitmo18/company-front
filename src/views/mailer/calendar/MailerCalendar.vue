@@ -17,11 +17,12 @@
 
 <script setup>
 import { computed, ref, watch } from "vue"
-import { calendarList } from "@/service/employees/calendarService.js"
+import { tasksCalendar } from "@/service/mailer/packageScheduleService"
 import { getDateNow, getFirstAndLastDayOfMonth } from "@/utils/format.js"
 import { CalendarCustom, Filters } from "@/components"
-import { COLOR_SCHEME_CALENDAR, FILTER_TYPE_EQ_MULTI } from "@/utils/dictionary.js"
-import { employeeDepartmentForFilter } from "@/service/employees/dictionaryService.js"
+import { COLOR_SCHEME_CALENDAR, FILTER_TYPE_EQ_CHECK } from "@/utils/dictionary.js"
+import { sroOrgListForFilterMailer } from "@/service/ossa/clients/sroOrganizationService.js"
+import { typePackageDictionaryFilterMailer } from "@/service/mailer/packageService.js"
 import { useStore } from "vuex"
 
 const store = useStore()
@@ -29,12 +30,20 @@ const store = useStore()
 const defaultFilters = () => {
   return [
     {
-      filterBy: "department",
+      filterBy: "packageType",
       value: null,
-      label: "Отдел",
-      type: FILTER_TYPE_EQ_MULTI,
-      selectValues: [],
-      api: employeeDepartmentForFilter,
+      label: "Тип пакета",
+      type: FILTER_TYPE_EQ_CHECK,
+      selectValues: "",
+      api: typePackageDictionaryFilterMailer,
+    },
+    {
+      filterBy: "sroOrganization",
+      value: null,
+      label: "СРО",
+      type: FILTER_TYPE_EQ_CHECK,
+      selectValues: "",
+      api: sroOrgListForFilterMailer,
     },
   ]
 }
@@ -46,6 +55,7 @@ const events = ref([])
 
 const countFilters = computed(() => Object.keys(filters.value).length)
 const calendars = computed(() => store.getters["settings/calendars"])
+const { startDate: date_start, endDate: date_end } = getFirstAndLastDayOfMonth(selectedDate.value)
 
 const handleFilter = () => {
   filters.value = innerFilters.value.reduce((acc, item) => {
@@ -73,16 +83,14 @@ const handleClearFilter = () => {
 watch(
   [selectedDate, filters],
   () => {
-    calendarList({
+    tasksCalendar({
       filters: filters.value,
-      parameters: getFirstAndLastDayOfMonth(selectedDate.value),
+      parameters: { date_start, date_end },
     }).then(res => {
-      events.value = res
-
-      console.log("events", res)
+      events.value = res.calendar
 
       const newConfigCalendars = {}
-      res.forEach(calendar => {
+      res.calendar.forEach(calendar => {
         if (!calendars.value[calendar.calendarId]) {
           newConfigCalendars[calendar.calendarId] = {
             colorName: calendar.calendarId,

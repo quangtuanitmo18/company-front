@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory } from "vue-router";
-import store from "@/store";
+import { createRouter, createWebHistory } from "vue-router"
+import store from "@/store"
 
 const routes = [
   {
@@ -7,7 +7,7 @@ const routes = [
     name: "login",
     meta: {
       layout: "simple-layout",
-      title: "Авторизация"
+      title: "Авторизация",
     },
     component: () => import("@/views/LoginPage.vue"),
   },
@@ -16,7 +16,7 @@ const routes = [
     name: "home",
     meta: {
       layout: "app-layout",
-      title: "Проекты"
+      title: "Проекты",
     },
     component: () => import("@/views/HomePage.vue"),
   },
@@ -25,7 +25,7 @@ const routes = [
     name: "profile",
     meta: {
       layout: "app-layout",
-      title: "Профиль"
+      title: "Профиль",
     },
     component: () => import("@/views/ProfilePage.vue"),
   },
@@ -46,7 +46,7 @@ const routes = [
     name: "employees-calendar",
     meta: {
       layout: "project-layout",
-      title: "Сотрудники"
+      title: "Сотрудники",
     },
     component: () => import("@/views/employees/EmployeeCalendar.vue"),
   },
@@ -97,7 +97,7 @@ const routes = [
     name: "auth-user",
     meta: {
       layout: "project-layout",
-      title: "Авторизация"
+      title: "Авторизация",
     },
     component: () => import("@/views/auth/UserList.vue"),
   },
@@ -106,7 +106,7 @@ const routes = [
     name: "auth-user-detail",
     meta: {
       layout: "project-layout",
-      title: "Авторизация"
+      title: "Авторизация",
     },
     component: () => import("@/views/auth/UserDetail.vue"),
   },
@@ -115,7 +115,7 @@ const routes = [
     name: "auth-user-create",
     meta: {
       layout: "project-layout",
-      title: "Авторизация"
+      title: "Авторизация",
     },
     component: () => import("@/views/auth/UserCreate.vue"),
   },
@@ -124,7 +124,7 @@ const routes = [
     name: "auth-user-update",
     meta: {
       layout: "project-layout",
-      title: "Авторизация"
+      title: "Авторизация",
     },
     component: () => import("@/views/auth/UserUpdate.vue"),
   },
@@ -133,7 +133,7 @@ const routes = [
     name: "auth-user-roles",
     meta: {
       layout: "project-layout",
-      title: "Авторизация"
+      title: "Авторизация",
     },
     component: () => import("@/views/auth/roles/RoleList.vue"),
   },
@@ -142,7 +142,7 @@ const routes = [
     name: "auth-user-role-detail",
     meta: {
       layout: "project-layout",
-      title: "Авторизация"
+      title: "Авторизация",
     },
     component: () => import("@/views/auth/roles/RoleDetail.vue"),
   },
@@ -151,7 +151,7 @@ const routes = [
     name: "auth-user-role-create",
     meta: {
       layout: "project-layout",
-      title: "Авторизация"
+      title: "Авторизация",
     },
     component: () => import("@/views/auth/roles/RoleCreate.vue"),
   },
@@ -160,7 +160,7 @@ const routes = [
     name: "auth-user-role-update",
     meta: {
       layout: "project-layout",
-      title: "Авторизация"
+      title: "Авторизация",
     },
     component: () => import("@/views/auth/roles/RoleUpdate.vue"),
   },
@@ -171,7 +171,7 @@ const routes = [
     name: "panel",
     meta: {
       layout: "project-layout",
-      title: "ОССА"
+      title: "ОССА",
     },
     component: () => import("@/views/ossa/panel/PanelMain.vue"),
   },
@@ -180,7 +180,7 @@ const routes = [
     name: "calls",
     meta: {
       layout: "project-layout",
-      title: "ОССА"
+      title: "ОССА",
     },
     component: () => import("@/views/ossa/calls/CallList.vue"),
   },
@@ -189,7 +189,7 @@ const routes = [
     name: "calls-graphics",
     meta: {
       layout: "project-layout",
-      title: "ОССА"
+      title: "ОССА",
     },
     component: () => import("@/views/ossa/callsGraphic/CallGraphic.vue"),
   },
@@ -198,7 +198,7 @@ const routes = [
     name: "call-view",
     meta: {
       layout: "project-layout",
-      title: "ОССА"
+      title: "ОССА",
     },
     component: () => import("@/views/ossa/calls/CallView.vue"),
   },
@@ -207,7 +207,7 @@ const routes = [
     name: "calls-operator",
     meta: {
       layout: "project-layout",
-      title: "ОССА"
+      title: "ОССА",
     },
     component: () => import("@/views/ossa/callsGraphic/CallGraphic.vue"),
   },
@@ -216,7 +216,7 @@ const routes = [
     name: "calls-sro",
     meta: {
       layout: "project-layout",
-      title: "ОССА"
+      title: "ОССА",
     },
     component: () => import("@/views/ossa/callsGraphic/CallGraphic.vue"),
   },
@@ -225,7 +225,7 @@ const routes = [
     name: "calls-hourly-by-type",
     meta: {
       layout: "project-layout",
-      title: "ОССА"
+      title: "ОССА",
     },
     component: () => import("@/views/ossa/callsGraphic/CallGraphic.vue"),
   },
@@ -234,7 +234,7 @@ const routes = [
     name: "work-plan",
     meta: {
       layout: "project-layout",
-      title: "ОССА"
+      title: "ОССА",
     },
     component: () => import("@/views/ossa/workPlan/WorkPlanTabs.vue"),
   },
@@ -243,7 +243,7 @@ const routes = [
     name: "work-plan-view",
     meta: {
       layout: "project-layout",
-      title: "ОССА"
+      title: "ОССА",
     },
     component: () => import("@/views/ossa/agents/AgentView.vue"),
   },
@@ -252,7 +252,7 @@ const routes = [
     name: "agent-list",
     meta: {
       layout: "project-layout",
-      title: "ОССА"
+      title: "ОССА",
     },
     component: () => import("@/views/ossa/agents/AgentList.vue"),
   },
@@ -261,7 +261,7 @@ const routes = [
     name: "agent-view",
     meta: {
       layout: "project-layout",
-      title: "ОССА"
+      title: "ОССА",
     },
     component: () => import("@/views/ossa/agents/AgentView.vue"),
   },
@@ -270,7 +270,7 @@ const routes = [
     name: "event-do-graphic",
     meta: {
       layout: "project-layout",
-      title: "ОССА"
+      title: "ОССА",
     },
     component: () => import("@/views/ossa/eventDoGraphic/EventDoGraphic.vue"),
   },
@@ -281,7 +281,7 @@ const routes = [
     name: "package-list",
     meta: {
       layout: "project-layout",
-      title: "Рассылка"
+      title: "Рассылка",
     },
     component: () => import("@/views/mailer/package/PackageList.vue"),
   },
@@ -290,7 +290,7 @@ const routes = [
     name: "mailer-package-create",
     meta: {
       layout: "project-layout",
-      title: "Рассылка"
+      title: "Рассылка",
     },
     component: () => import("@/views/mailer/package/PackageCreate.vue"),
   },
@@ -299,7 +299,7 @@ const routes = [
     name: "members-in-package",
     meta: {
       layout: "project-layout",
-      title: "Рассылка"
+      title: "Рассылка",
     },
     component: () => import("@/views/mailer/package/MembersInPackage.vue"),
   },
@@ -308,7 +308,7 @@ const routes = [
     name: "mailer-sro-list",
     meta: {
       layout: "project-layout",
-      title: "Рассылка"
+      title: "Рассылка",
     },
     component: () => import("@/views/mailer/schedule/SroList.vue"),
   },
@@ -317,7 +317,7 @@ const routes = [
     name: "mailer-sro-schedule-add",
     meta: {
       layout: "project-layout",
-      title: "Рассылка"
+      title: "Рассылка",
     },
     component: () => import("@/views/mailer/schedule/scheduleForm/SroScheduleCreate.vue"),
   },
@@ -326,7 +326,7 @@ const routes = [
     name: "mailer-sro-schedule-view",
     meta: {
       layout: "project-layout",
-      title: "Рассылка"
+      title: "Рассылка",
     },
     component: () => import("@/views/mailer/schedule/SroScheduleDetail.vue"),
   },
@@ -335,9 +335,18 @@ const routes = [
     name: "mailer-sro-schedule-edit",
     meta: {
       layout: "project-layout",
-      title: "Рассылка"
+      title: "Рассылка",
     },
     component: () => import("@/views/mailer/schedule/scheduleForm/SroScheduleUpdate.vue"),
+  },
+  {
+    path: "/mailer/calendar",
+    name: "mailer-calendar",
+    meta: {
+      layout: "project-layout",
+      title: "Рассылка",
+    },
+    component: () => import("@/views/mailer/calendar/MailerCalendar.vue"),
   },
 
   // Not found
@@ -346,9 +355,9 @@ const routes = [
     name: "not-found",
     meta: {
       layout: "simple-layout",
-      title: "Not found"
+      title: "Not found",
     },
-    component: () => import("@/views/NotFound.vue")
+    component: () => import("@/views/NotFound.vue"),
   },
 
   // Test
@@ -357,55 +366,55 @@ const routes = [
     name: "test",
     meta: {
       layout: "app-layout",
-      title: "Test"
+      title: "Test",
     },
     component: () => import("@/views/Test.vue"),
   },
-];
+]
 
 // Vue router
 const router = createRouter({
   history: createWebHistory(),
   routes,
-});
+})
 
-const anonymousRoutes = ["login"];
+const anonymousRoutes = ["login"]
 
 router.beforeEach(async (to, from, next) => {
   // Set title
-  document.title = to.meta.title || 'Проекты'
+  document.title = to.meta.title || "Проекты"
 
   // Check access
-  const isAuth = store.getters["auth/isAuthenticated"];
+  const isAuth = store.getters["auth/isAuthenticated"]
 
   if (!isAuth && !anonymousRoutes.includes(to.name)) {
-    return next({ name: "login" });
+    return next({ name: "login" })
   }
 
   // Если авторизованный пользователь пытается зайти в login, то перенаправляется в home
-  if (isAuth && to.name === "login") return next({ name: "home" });
+  if (isAuth && to.name === "login") return next({ name: "home" })
 
   // Allow only available routes
-  if(isAuth){
+  if (isAuth) {
     let userRoles = store.getters["auth/userRoles"]
     const requiredRoles = to.meta.roleName
 
     if (!requiredRoles || requiredRoles.length === 0) {
       // Если нет roleName - роут общий для всех
-      return next();
+      return next()
     }
 
-    const hasAccess = requiredRoles.some(role => userRoles.includes(role));
+    const hasAccess = requiredRoles.some(role => userRoles.includes(role))
     // Если есть roleName - проверить доступен ли роут для этого roleName у пользователя
     // Если авторизованный пользователь пытается зайти в login, то перенаправляется в home
     if (hasAccess) {
-      return next();
+      return next()
     } else {
-      return next({ name: "home" });
+      return next({ name: "home" })
     }
   }
 
   return next()
-});
+})
 
-export default router;
+export default router
