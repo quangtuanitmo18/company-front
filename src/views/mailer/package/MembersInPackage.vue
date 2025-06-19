@@ -16,13 +16,13 @@
             <v-expansion-panel-text>
               <v-row class="pt-2">
                 <v-col cols="12" md="3">
-                  <p class="mr-1 font-weight-bold">Тип: </p>
+                  <p class="mr-1 font-weight-bold">Тип:</p>
                 </v-col>
                 <v-col cols="12" md="3">
                   {{ headerInfo?.package?.packageType.typeName }}
                 </v-col>
                 <v-col cols="12" md="3">
-                  <p class="mr-1 font-weight-bold">Статус: </p>
+                  <p class="mr-1 font-weight-bold">Статус:</p>
                 </v-col>
                 <v-col cols="12" md="3">
                   {{ headerInfo?.package?.packageStatus.statusName }}
@@ -30,13 +30,13 @@
               </v-row>
               <v-row>
                 <v-col cols="12" md="3">
-                  <p class="mr-1 font-weight-bold">CPO: </p>
+                  <p class="mr-1 font-weight-bold">CPO:</p>
                 </v-col>
                 <v-col cols="12" md="3">
                   {{ headerInfo?.package?.sroOrganization.title }}
                 </v-col>
                 <v-col cols="12" md="3">
-                  <p class="mr-1 font-weight-bold">Дата создания: </p>
+                  <p class="mr-1 font-weight-bold">Дата создания:</p>
                 </v-col>
                 <v-col cols="12" md="3">
                   {{ shortDateFormat(headerInfo?.package?.dttmCreated) }}
@@ -62,26 +62,32 @@
       >
         <template #header-buttons>
           <v-btn
-              v-if="headerInfo?.package?.packageStatus.status === 'created'"
-              @click="handlePackageGenerate"
-              min-width="46"
-              width="46"
-              height="46"
-              variant="flat"
-              title="Генерация документов"
-              class="table-head-icon">
+            v-if="headerInfo?.package?.packageStatus.status === 'created'"
+            @click="handlePackageGenerate"
+            min-width="46"
+            width="46"
+            height="46"
+            variant="flat"
+            title="Генерация документов"
+            class="table-head-icon"
+          >
             <v-icon class="color-primary" size="x-large" icon="mdi-file-sign"></v-icon>
           </v-btn>
           <v-btn
-              v-if="headerInfo?.package?.packageStatus.status === 'generated'"
-              @click="handlePackageSend"
-              min-width="46"
-              width="46"
-              height="46"
-              variant="flat"
-              title="Рассылка писем"
-              class="table-head-icon">
-            <v-icon class="color-primary" size="x-large" icon="mdi-invoice-text-send-outline"></v-icon>
+            v-if="headerInfo?.package?.packageStatus.status === 'generated'"
+            @click="handlePackageSend"
+            min-width="46"
+            width="46"
+            height="46"
+            variant="flat"
+            title="Рассылка писем"
+            class="table-head-icon"
+          >
+            <v-icon
+              class="color-primary"
+              size="x-large"
+              icon="mdi-invoice-text-send-outline"
+            ></v-icon>
           </v-btn>
         </template>
       </table-with-filter>
@@ -93,255 +99,76 @@
       </div>
     </template>
     <div v-if="notion" class="form-notion mt-4">
-      <p class="form-notion-text" :class="{[notion.status]: true}">{{ notion.text }}</p>
+      <p class="form-notion-text" :class="{ [notion.status]: true }">{{ notion.text }}</p>
     </div>
     <div class="card-footer d-flex justify-end mt-4">
-      <v-btn color="primary" variant="outlined" @click="handleBack">
-        Назад
-      </v-btn>
+      <v-btn color="primary" variant="outlined" @click="handleBack"> Назад </v-btn>
     </div>
   </v-card>
-  <modal width="1200px" v-model="isShowModal">
-    <template #title>
-      <template v-if="!loadingModal">
-        <div class="d-flex">
-          <p class="mr-1 font-italic">Наименование:</p>
-          <p class="mr-4">{{ currentInfo?.packageMember.memberShortname }}</p>
-          <p class="mr-1 font-italic">ИНН:</p>
-          <p class="mr-4">{{ currentInfo?.packageMember.memberInn }}</p>
-        </div>
-      </template>
-      <template v-else>
-        Загрузка данных...
-      </template>
-    </template>
-    <template #content>
-      <v-row>
-        <v-col cols="12" md="6">
-          <v-card elevation="2" class="pa-2">
-            <v-row>
-              <v-col cols="12" md="6">
-                <p class="mr-1 font-weight-bold">Тип: </p>
-              </v-col>
-              <v-col cols="12" md="6">
-                {{ currentInfo?.packageMember?.packageType.typeName }}
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12" md="6">
-                <p class="mr-1 font-weight-bold">Статус: </p>
-              </v-col>
-              <v-col cols="12" md="6">
-                {{ currentInfo?.packageMember?.packageMemberStatus.statusName }}
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12" md="6">
-                <p class="mr-1 font-weight-bold">Организация: </p>
-              </v-col>
-              <v-col cols="12" md="6">
-                {{ headerInfo?.package?.sroOrganization.title }}
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12" md="6">
-                <p class="mr-1 font-weight-bold">ИНН: </p>
-              </v-col>
-              <v-col cols="12" md="6">
-                {{ currentInfo?.packageMember.memberInn }}
-              </v-col>
-            </v-row>
-          </v-card>
-        </v-col>
-        <v-col cols="12" md="6">
-          <v-card elevation="2" class="pa-2">
-            <v-row>
-              <v-col cols="12" md="6">
-                <p class="mr-1 font-weight-bold">Дата создания: </p>
-              </v-col>
-              <v-col cols="12" md="6">
-                {{ shortDateFormat(currentInfo?.packageMember?.dttmCreated) }}
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12" md="6">
-                <p class="mr-1 font-weight-bold">Дата генерации документов: </p>
-              </v-col>
-              <v-col cols="12" md="6">
-                {{ shortDateFormat(currentInfo?.packageMember?.dttmGenerate) }}
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12" md="6">
-                <p class="mr-1 font-weight-bold">Дата отправки писем: </p>
-              </v-col>
-              <v-col cols="12" md="6">
-                {{ shortDateFormat(currentInfo?.packageMember?.dttmSendEmail) }}
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12" md="6">
-                <br>
-              </v-col>
-            </v-row>
-          </v-card>
-        </v-col>
-        <v-col cols="12" md="12">
-          <v-card elevation="2" class="pa-2">
-            <v-row>
-              <v-col cols="12" md="2">
-                <p class="mr-1 font-weight-bold">Организация: </p>
-              </v-col>
-              <v-col cols="12" md="3">
-                {{ currentInfo?.packageMember?.memberShortname }}
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12" md="2">
-                <p class="mr-1 font-weight-bold">Описание: </p>
-              </v-col>
-              <v-col cols="12" md="10">
-                {{ currentInfo?.packageMember?.itemName }}
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12" md="6">
-                <v-row>
-                  <v-col cols="12" md="6">
-                    <p class="mr-1 font-weight-bold">Итого: </p>
-                  </v-col>
-                  <v-col cols="12" md="6">
-                    {{ moneyFormat(currentInfo?.packageMember?.itemTotalSum) }} руб.
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="12" md="6">
-                    <p class="mr-1 font-weight-bold">Период: </p>
-                  </v-col>
-                  <v-col cols="12" md="6">
-                    {{ currentInfo?.packageMember?.itemPeriod }}
-                  </v-col>
-                </v-row>
-              </v-col>
-              <v-col cols="12" md="1">
-                <p class="mr-1 font-weight-bold">Номер счета: </p>
-              </v-col>
-              <v-col cols="12" md="1">
-                {{ currentInfo?.packageMember?.invoiceNumber }}
-              </v-col>
-              <v-col cols="12" md="1">
-                <p class="mr-1 font-weight-bold">Дата счета: </p>
-              </v-col>
-              <v-col cols="12" md="2">
-                {{ shortDateFormat(currentInfo?.packageMember?.invoiceDate) }}
-              </v-col>
-            </v-row>
-            <v-row v-if="currentInfo?.packageMember?.agentDebt">
-              <v-col cols="12" md="12">
-                <div v-html="nextLine(moneyFormat(currentInfo?.packageMember?.agentDebt))"></div>
-              </v-col>
-            </v-row>
-          </v-card>
-        </v-col>
 
-        <v-col cols="4" v-for="document in currentInfo?.packageMember.documents">
-          <v-card elevation="2" class="pa-2">
-            <p class="card-title color-primary"></p>
-            <div class="d-flex">
-              <p :style="{'max-width': '240px'}" class="color-secondary"></p>
-              <v-btn outlined icon class="ma-2" @click="handleDocumentDownloadFile(document.link, document, currentInfo?.packageMember)">
-                <v-icon icon="mdi-download-box-outline"></v-icon>
-              </v-btn>
-              <p class="mt-6 card-body-value"> {{ document.title }}</p>
-            </div>
-          </v-card>
-        </v-col>
-
-        <v-col cols="12" md="12">
-          <v-card v-if="currentInfo?.packageMember.emails"  elevation="2" class="pa-2">
-            <v-row>
-              <v-col cols="12" md="12">
-                <v-table class="table pt-4">
-                  <thead>
-                    <tr>
-                      <th style="width: 40%">Email</th>
-                      <th style="width: 20%; text-align: center">Статус</th>
-                      <th style="width: 20%; text-align: center">Успешно</th>
-                      <th style="width: 20%; text-align: center">Обратная связь</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="email in currentInfo?.packageMember.emails">
-                      <td>{{ email?.email }}</td>
-                      <td style="text-align: center">{{ email?.status?.title }}</td>
-                      <td style="text-align: center"><v-icon v-if="email?.isSuccess" size="large" class="icon-color-success" icon="mdi-check"></v-icon></td>
-                      <td style="text-align: center"><v-icon v-if="email?.hasFeedbackSent" size="large" class="icon-color-success" icon="mdi-check"></v-icon></td>
-                    </tr>
-                  </tbody>
-                </v-table>
-              </v-col>
-            </v-row>
-          </v-card>
-        </v-col>
-      </v-row>
-    </template>
-    <template #actions>
-      <btn-secondary @click="() => isShowModal = false">
-        Закрыть
-      </btn-secondary>
-    </template>
-  </modal>
+  <package-member-detail-modal
+    v-model="isShowModal"
+    :member-data="currentInfo"
+    :loading="loadingModal"
+    :organization-title="headerInfo?.package?.sroOrganization.title"
+    @download-document="handleDocumentDownloadFile"
+  />
 </template>
 
 <script setup>
-import {computed, onMounted, ref, shallowRef, watch} from "vue";
+import { computed, onMounted, ref, shallowRef, watch } from "vue"
 import {
-  archiveDownload, linkDownload,
-  membersInPackage, memberStatusPackageDictionaryFilterMailer, packageAdd, packageDetails, packageGenerate,
-  packageMemberDetails, packageSend
-} from "@/service/mailer/packageService.js";
-import AppPageTitle from "@/layouts/AppPageTitle.vue";
-import { TableWithFilter } from "@/components/index.js";
+  archiveDownload,
+  linkDownload,
+  membersInPackage,
+  memberStatusPackageDictionaryFilterMailer,
+  packageAdd,
+  packageDetails,
+  packageGenerate,
+  packageMemberDetails,
+  packageSend,
+} from "@/service/mailer/packageService.js"
+import AppPageTitle from "@/layouts/AppPageTitle.vue"
+import { TableWithFilter } from "@/components/index.js"
 import {
   FILTER_TYPE_DATE,
   FILTER_TYPE_EQ_WITH_SEARCH,
-  FILTER_TYPE_LIKE
-} from "@/utils/dictionary.js";
-import { useStore } from "vuex";
-import { useRoute, useRouter } from "vue-router";
-import Modal from "@/components/Modal.vue";
-import {BtnSecondary} from "@/components/buttons/index.js";
-import {downloadFile} from "@/utils/files.js";
-import {moneyFormat, shortDateFormat} from "@/utils/format.js";
+  FILTER_TYPE_LIKE,
+} from "@/utils/dictionary.js"
+import { useStore } from "vuex"
+import { useRoute, useRouter } from "vue-router"
+import { downloadFile } from "@/utils/files.js"
+import { shortDateFormat } from "@/utils/format.js"
+import PackageMemberDetailModal from "./packageMemberDetailModal.vue"
 
-const page = ref(1);
-const search = ref("");
-const filters = shallowRef({});
-const sort = shallowRef([]);
+const page = ref(1)
+const search = ref("")
+const filters = shallowRef({})
+const sort = shallowRef([])
 
 const isShowModal = ref(false)
 const currentInfo = ref(null)
 const loadingModal = ref(true)
 
-const store = useStore();
-const route = useRoute();
-const router = useRouter();
+const store = useStore()
+const route = useRoute()
+const router = useRouter()
 
-const list = shallowRef([]);
-const pagination = shallowRef({});
-const loading = ref(true);
+const list = shallowRef([])
+const pagination = shallowRef({})
+const loading = ref(true)
 
-const size = computed(() => store.getters["settings/rowPage"]);
-const countFilters = computed(() => Object.keys(filters.value).length);
+const size = computed(() => store.getters["settings/rowPage"])
+const countFilters = computed(() => Object.keys(filters.value).length)
 
 const notion = ref(null)
 const panel = ref([0])
 const headerInfo = ref({})
 
-const handleClickRow = (item) => {
+const handleClickRow = item => {
   handleShowModal(item)
 }
-const handleShowModal = async (item) => {
+const handleShowModal = async item => {
   isShowModal.value = true
   loadingModal.value = true
 
@@ -350,20 +177,21 @@ const handleShowModal = async (item) => {
 
     // currentInfo.value = packageDetail.value
     loadingModal.value = false
-  }catch (err){
+  } catch (err) {
     console.log("err", err)
   }
 }
 
-const handleDownloadFile = async (item) => {
+const handleDownloadFile = async item => {
   const res = await archiveDownload(item.id)
-  const fileName = item.packageType.type + '_' + item.memberInn + '_' + item.dttmCreated.split(' ')[0]
+  const fileName =
+    item.packageType.type + "_" + item.memberInn + "_" + item.dttmCreated.split(" ")[0]
   downloadFile(res, fileName)
 }
 
 const handleDocumentDownloadFile = async (link, document, member) => {
   const res = await linkDownload(link)
-  const fileName = document.id + '_' + member.memberInn + '_' + member.dttmCreated.split(' ')[0]
+  const fileName = document.id + "_" + member.memberInn + "_" + member.dttmCreated.split(" ")[0]
   downloadFile(res, fileName)
 }
 
@@ -372,32 +200,36 @@ const handleBack = () => {
 }
 
 const handlePackageGenerate = () => {
-  packageGenerate(route.params.id).then(res => {
-    location.replace('/mailer/members-in-package/' + route.params.id)
-  }).catch(err => {
-    notion.value = {
-      status: "error",
-      text: err
-    }
-  })
+  packageGenerate(route.params.id)
+    .then(res => {
+      location.replace("/mailer/members-in-package/" + route.params.id)
+    })
+    .catch(err => {
+      notion.value = {
+        status: "error",
+        text: err,
+      }
+    })
 }
 
 const handlePackageSend = () => {
-  packageSend(route.params.id).then(res => {
-    location.replace('/mailer/members-in-package/' + route.params.id)
-  }).catch(err => {
-    notion.value = {
-      status: "error",
-      text: err
-    }
-  })
+  packageSend(route.params.id)
+    .then(res => {
+      location.replace("/mailer/members-in-package/" + route.params.id)
+    })
+    .catch(err => {
+      notion.value = {
+        status: "error",
+        text: err,
+      }
+    })
 }
 
 const configActions = [
   {
     icon: "mdi-close",
-    handleFunc: handleBack
-  }
+    handleFunc: handleBack,
+  },
 ]
 
 const columns = [
@@ -420,9 +252,9 @@ const columns = [
       sortable: false,
     },
     filterOptions: {
-      filterByValue: 'packageMemberStatus',
+      filterByValue: "packageMemberStatus",
       filterType: FILTER_TYPE_EQ_WITH_SEARCH,
-      filterApi: memberStatusPackageDictionaryFilterMailer
+      filterApi: memberStatusPackageDictionaryFilterMailer,
     },
   },
   {
@@ -459,8 +291,8 @@ const columns = [
     },
   },
   {
-    heading: '',
-    value: '',
+    heading: "",
+    value: "",
     type: "custom-buttons",
     buttons: [
       {
@@ -468,41 +300,41 @@ const columns = [
           {
             title: "isDocsGenerated",
             value: true,
-            equal: true
-          }
+            equal: true,
+          },
         ],
         type: "icon",
         icon: "mdi-download-box-outline",
         title: "Cкачать",
-        handleFunc: (item) => handleDownloadFile(item)
+        handleFunc: item => handleDownloadFile(item),
       },
-    ]
-  }
-];
+    ],
+  },
+]
 
-const setPage = (value) => {
-  page.value = value;
-};
+const setPage = value => {
+  page.value = value
+}
 
-const setSort = (value) => {
-  sort.value = value;
-};
+const setSort = value => {
+  sort.value = value
+}
 
-const setSearch = (value) => {
-  search.value = value;
-};
+const setSearch = value => {
+  search.value = value
+}
 
 const handleClearAllSettings = () => {
-  page.value = 1;
-  filters.value = {};
-  sort.value = [];
-  search.value = "";
-};
+  page.value = 1
+  filters.value = {}
+  sort.value = []
+  search.value = ""
+}
 
-const setFilter = (dataFilters) => {
+const setFilter = dataFilters => {
   // dataFilters always is arr
   filters.value = dataFilters.reduce((acc, item) => {
-    const type = typeof item.value;
+    const type = typeof item.value
     if (
       (type === "object" && item.value?.length) ||
       (type === "string" && item.value) ||
@@ -512,22 +344,16 @@ const setFilter = (dataFilters) => {
       return {
         ...acc,
         [item.filterBy]: item.value,
-      };
+      }
     }
 
-    return acc;
-  }, {});
-};
-
-
-const nextLine = (text) => {
-  return text.replace(/\n/g, '<br>');
+    return acc
+  }, {})
 }
 
 onMounted(async () => {
-      headerInfo.value = await packageDetails(route.params.id)
-    }
-);
+  headerInfo.value = await packageDetails(route.params.id)
+})
 
 watch(
   [page, sort, filters, search],
@@ -537,20 +363,22 @@ watch(
       row_page: size.value,
       filters: filters.value,
       // convert sort to object
-      sort_by: sort.value.reduce((acc, i) => ({...acc, [i.sortBy]: i.sortType}), {}),
-      search_string: search.value
-    }).then(res => {
-      list.value = res.items
-      pagination.value = {
-        count: res.data_header.count,
-        pages: res.data_header.count_pages,
-        page: res.data_header.page,
-        size: res.data_header.row_page,
-      }
-    }).finally(() => {
-      loading.value = false
+      sort_by: sort.value.reduce((acc, i) => ({ ...acc, [i.sortBy]: i.sortType }), {}),
+      search_string: search.value,
     })
+      .then(res => {
+        list.value = res.items
+        pagination.value = {
+          count: res.data_header.count,
+          pages: res.data_header.count_pages,
+          page: res.data_header.page,
+          size: res.data_header.row_page,
+        }
+      })
+      .finally(() => {
+        loading.value = false
+      })
   },
   { immediate: true }
-);
+)
 </script>
