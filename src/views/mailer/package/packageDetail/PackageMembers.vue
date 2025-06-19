@@ -1,145 +1,91 @@
 <template>
-  <app-page-title iconClassname="mdi-email-multiple" title="Рассылка"></app-page-title>
-  <v-card class="px-4 py-4">
-    <v-row>
-      <v-col cols="12" md="12" class="mb-6">
-        <v-expansion-panels v-model="panel">
-          <v-expansion-panel>
-            <v-expansion-panel-title class="panel-header">
-              <template v-slot:default="{ expanded }">
-                <h4 class="panel-section-header">
-                  <v-icon icon="mdi-menu-down"></v-icon>
-                  <span class="panel-section-header-text">Данные для рассылки</span>
-                </h4>
-              </template>
-            </v-expansion-panel-title>
-            <v-expansion-panel-text>
-              <v-row class="pt-2">
-                <v-col cols="12" md="3">
-                  <p class="mr-1 font-weight-bold">Тип:</p>
-                </v-col>
-                <v-col cols="12" md="3">
-                  {{ headerInfo?.package?.packageType.typeName }}
-                </v-col>
-                <v-col cols="12" md="3">
-                  <p class="mr-1 font-weight-bold">Статус:</p>
-                </v-col>
-                <v-col cols="12" md="3">
-                  {{ headerInfo?.package?.packageStatus.statusName }}
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12" md="3">
-                  <p class="mr-1 font-weight-bold">CPO:</p>
-                </v-col>
-                <v-col cols="12" md="3">
-                  {{ headerInfo?.package?.sroOrganization.title }}
-                </v-col>
-                <v-col cols="12" md="3">
-                  <p class="mr-1 font-weight-bold">Дата создания:</p>
-                </v-col>
-                <v-col cols="12" md="3">
-                  {{ shortDateFormat(headerInfo?.package?.dttmCreated) }}
-                </v-col>
-              </v-row>
-            </v-expansion-panel-text>
-          </v-expansion-panel>
-        </v-expansion-panels>
-      </v-col>
-    </v-row>
-    <template v-if="!loading">
-      <table-with-filter
-        :columns="columns"
-        :items="list"
-        :pagination="pagination"
-        :sort="sort"
-        :countFilters="countFilters"
-        :setPage="setPage"
-        :setSort="setSort"
-        :setFilter="setFilter"
-        :handleClickRow="handleClickRow"
-        @clear-all-settings="handleClearAllSettings"
-      >
-        <template #header-buttons>
-          <v-btn
-            v-if="headerInfo?.package?.packageStatus.status === 'created'"
-            @click="handlePackageGenerate"
-            min-width="46"
-            width="46"
-            height="46"
-            variant="flat"
-            title="Генерация документов"
-            class="table-head-icon"
-          >
-            <v-icon class="color-primary" size="x-large" icon="mdi-file-sign"></v-icon>
-          </v-btn>
-          <v-btn
-            v-if="headerInfo?.package?.packageStatus.status === 'generated'"
-            @click="handlePackageSend"
-            min-width="46"
-            width="46"
-            height="46"
-            variant="flat"
-            title="Рассылка писем"
-            class="table-head-icon"
-          >
-            <v-icon
-              class="color-primary"
-              size="x-large"
-              icon="mdi-invoice-text-send-outline"
-            ></v-icon>
-          </v-btn>
-        </template>
-      </table-with-filter>
-    </template>
-    <template v-else>
-      <div style="clear: both"></div>
-      <div class="text-center pb-10">
-        <v-progress-circular indeterminate class="color-primary" />
-      </div>
-    </template>
-    <div v-if="notion" class="form-notion mt-4">
-      <p class="form-notion-text" :class="{ [notion.status]: true }">{{ notion.text }}</p>
+  <template v-if="!loading">
+    <table-with-filter
+      :columns="columns"
+      :items="list"
+      :pagination="pagination"
+      :sort="sort"
+      :countFilters="countFilters"
+      :setPage="setPage"
+      :setSort="setSort"
+      :setFilter="setFilter"
+      :handleClickRow="handleClickRow"
+      @clear-all-settings="handleClearAllSettings"
+    >
+      <template #header-buttons>
+        <v-btn
+          v-if="headerInfo?.package?.packageStatus.status === 'created'"
+          @click="handlePackageGenerate"
+          min-width="46"
+          width="46"
+          height="46"
+          variant="flat"
+          title="Генерация документов"
+          class="table-head-icon"
+        >
+          <v-icon class="color-primary" size="x-large" icon="mdi-file-sign"></v-icon>
+        </v-btn>
+        <v-btn
+          v-if="headerInfo?.package?.packageStatus.status === 'generated'"
+          @click="handlePackageSend"
+          min-width="46"
+          width="46"
+          height="46"
+          variant="flat"
+          title="Рассылка писем"
+          class="table-head-icon"
+        >
+          <v-icon
+            class="color-primary"
+            size="x-large"
+            icon="mdi-invoice-text-send-outline"
+          ></v-icon>
+        </v-btn>
+      </template>
+    </table-with-filter>
+  </template>
+  <template v-else>
+    <div class="text-center py-10">
+      <v-progress-circular indeterminate class="color-primary" />
     </div>
-    <div class="card-footer d-flex justify-end mt-4">
-      <v-btn color="primary" variant="outlined" @click="handleBack"> Назад </v-btn>
-    </div>
-  </v-card>
+  </template>
+  <div v-if="notion" class="form-notion mt-4">
+    <p class="form-notion-text" :class="{ [notion.status]: true }">{{ notion.text }}</p>
+  </div>
 
   <package-member-detail-modal
     v-model="isShowModal"
     :member-data="currentInfo"
     :loading="loadingModal"
-    :organization-title="headerInfo?.package?.sroOrganization.title"
     @download-document="handleDocumentDownloadFile"
   />
 </template>
 
 <script setup>
-import { computed, onMounted, ref, shallowRef, watch } from "vue"
+import { TableWithFilter } from "@/components/index.js"
 import {
   archiveDownload,
   linkDownload,
   membersInPackage,
   memberStatusPackageDictionaryFilterMailer,
-  packageAdd,
-  packageDetails,
   packageGenerate,
   packageMemberDetails,
   packageSend,
-} from "@/service/mailer/packageService.js"
-import AppPageTitle from "@/layouts/AppPageTitle.vue"
-import { TableWithFilter } from "@/components/index.js"
-import {
-  FILTER_TYPE_DATE,
-  FILTER_TYPE_EQ_WITH_SEARCH,
-  FILTER_TYPE_LIKE,
-} from "@/utils/dictionary.js"
-import { useStore } from "vuex"
+} from "@/service/mailer/packageService"
+import { FILTER_TYPE_DATE, FILTER_TYPE_EQ_WITH_SEARCH, FILTER_TYPE_LIKE } from "@/utils/dictionary"
+import { downloadFile } from "@/utils/files"
+import { computed, onMounted, ref, shallowRef, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
-import { downloadFile } from "@/utils/files.js"
-import { shortDateFormat } from "@/utils/format.js"
-import PackageMemberDetailModal from "./packageMemberDetailModal.vue"
+import { useStore } from "vuex"
+import PackageMemberDetailModal from "./PackageMemberDetailModal.vue"
+
+const props = defineProps({
+  data: {
+    type: Object,
+    required: true,
+  },
+})
+const headerInfo = computed(() => props.data.headerInfo)
 
 const page = ref(1)
 const search = ref("")
@@ -162,8 +108,6 @@ const size = computed(() => store.getters["settings/rowPage"])
 const countFilters = computed(() => Object.keys(filters.value).length)
 
 const notion = ref(null)
-const panel = ref([0])
-const headerInfo = ref({})
 
 const handleClickRow = item => {
   handleShowModal(item)
@@ -195,10 +139,6 @@ const handleDocumentDownloadFile = async (link, document, member) => {
   downloadFile(res, fileName)
 }
 
-const handleBack = () => {
-  router.go(-1)
-}
-
 const handlePackageGenerate = () => {
   packageGenerate(route.params.id)
     .then(res => {
@@ -224,13 +164,6 @@ const handlePackageSend = () => {
       }
     })
 }
-
-const configActions = [
-  {
-    icon: "mdi-close",
-    handleFunc: handleBack,
-  },
-]
 
 const columns = [
   {
@@ -350,10 +283,6 @@ const setFilter = dataFilters => {
     return acc
   }, {})
 }
-
-onMounted(async () => {
-  headerInfo.value = await packageDetails(route.params.id)
-})
 
 watch(
   [page, sort, filters, search],

@@ -36,7 +36,7 @@
                 <p class="mr-1 font-weight-bold">Организация:</p>
               </v-col>
               <v-col cols="12" md="6">
-                {{ organizationTitle }}
+                {{ memberData?.packageMember.memberShortname }}
               </v-col>
             </v-row>
             <v-row>
@@ -222,7 +222,6 @@ const props = defineProps({
   modelValue: Boolean,
   memberData: Object,
   loading: Boolean,
-  organizationTitle: String,
 })
 
 const emit = defineEmits(["update:modelValue", "download-document"])
@@ -238,7 +237,11 @@ const closeModal = () => {
 }
 
 const onDownloadDocument = (link, document, member) => {
-  emit("download-document", { link, document, member })
+  console.log("Link value:", link, typeof link)
+  console.log("Document:", document)
+  console.log("Member:", member)
+
+  emit("download-document", link, document, member)
 }
 
 const nextLine = text => {

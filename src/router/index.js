@@ -301,7 +301,7 @@ const routes = [
       layout: "project-layout",
       title: "Рассылка",
     },
-    component: () => import("@/views/mailer/package/MembersInPackage.vue"),
+    component: () => import("@/views/mailer/package/packageDetail/PackageDetail.vue"),
   },
   {
     path: "/mailer/schedule",
