@@ -53,8 +53,9 @@
                     <td>
                       <v-btn
                         class="icon-color-primary"
-                        @click="handleNearestTask(row)"
+                        @click.stop="handleNearestTask(row)"
                         size="small"
+                        variant="text"
                         icon="mdi-clock"
                         title="Ближайшие задачи"
                       ></v-btn>
@@ -68,6 +69,12 @@
       </v-expansion-panel>
     </v-expansion-panels>
   </div>
+  <modal-nearest-tasks
+    v-model="isModalTaskNearest"
+    :dataModalSchedule="dataModalSchedule"
+    :dataTaskNearest="dataTaskNearest"
+    :isLoadingModalTaskNearest="isLoadingModalTaskNearest"
+  />
 </template>
 
 <script setup>
@@ -75,6 +82,8 @@ import { ref, watch } from "vue"
 import { tasksSro, thressNerearestTasks } from "@/service/mailer/packageScheduleService.js"
 import { shortDateHourFormat } from "@/utils/format.js"
 import { useRouter } from "vue-router"
+
+import ModalNearestTasks from "./ModalNearestTasks.vue"
 
 const router = useRouter()
 const panel = ref({})
@@ -84,7 +93,7 @@ const detailsTo = "/mailer/schedule/view/"
 
 // modal nearest task
 const isModalTaskNearest = ref(false)
-const dataTaskNearest = ref({})
+const dataTaskNearest = ref([])
 const dataModalSchedule = ref({})
 const isLoadingModalTaskNearest = ref(false)
 
@@ -106,6 +115,7 @@ const handleDetailsTo = item => {
 
 // nearest task modal
 const handleNearestTask = async item => {
+  dataTaskNearest.value = []
   isModalTaskNearest.value = true
   dataModalSchedule.value = item
   isLoadingModalTaskNearest.value = true
@@ -119,6 +129,10 @@ const handleNearestTask = async item => {
     isLoadingModalTaskNearest.value = false
   }
 }
+const closeTaskNearestModal = () => {
+  isModalTaskNearest.value = false
+}
+
 watch(
   () => sroList,
   items => {
