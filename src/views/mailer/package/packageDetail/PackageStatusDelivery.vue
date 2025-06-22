@@ -1,30 +1,37 @@
 <template>
-  <template v-if="!loading">
-    <table-comp
-      :columns="columns"
-      :items="list"
-      :pagination="pagination"
-      :sort="sort"
-      :setPage="setPage"
-      :setSort="setSort"
-    />
-  </template>
-  <template v-else>
-    <div class="text-center py-10">
-      <v-progress-circular indeterminate class="color-primary" />
-    </div>
-  </template>
+  <div class="mt-4">
+    <template v-if="!loading">
+      <table-with-filter
+        :columns="columns"
+        :items="list"
+        :pagination="pagination"
+        :countFilters="countFilters"
+        :sort="sort"
+        :setPage="setPage"
+        :setSort="setSort"
+        :setFilter="setFilter"
+        @clear-all-settings="handleClearAllSettings"
+      />
+    </template>
+    <template v-else>
+      <div class="text-center py-10">
+        <v-progress-circular indeterminate class="color-primary" />
+      </div>
+    </template>
+  </div>
 </template>
 
 <script setup>
-import { TableComp } from "@/components/index.js"
+import { TableWithFilter } from "@/components/index.js"
 import { packageMemberDeliveryStatusReport } from "@/service/mailer/reportService"
+import { FILTER_TYPE_EQ } from "@/utils/dictionary"
 import { computed, ref, shallowRef, watch } from "vue"
 import { useRoute } from "vue-router"
 import { useStore } from "vuex"
 
 const page = ref(1)
 const sort = shallowRef([])
+const filters = shallowRef({})
 
 const store = useStore()
 const route = useRoute()
@@ -34,32 +41,43 @@ const pagination = shallowRef({})
 const loading = ref(true)
 
 const size = computed(() => store.getters["settings/rowPage"])
+const countFilters = computed(() => Object.keys(filters.value).length)
 
 const columns = ref([
   {
     heading: "Наименование организации",
     value: "memberName",
     sortOptions: {
-      sortable: false,
+      sortable: false
     },
-    filterOptions: {},
+    filterOptions: {}
   },
   {
     heading: "ИНН",
     value: "inn",
     sortOptions: {
-      sortable: false,
+      sortable: false
     },
-    filterOptions: {},
+    filterOptions: {}
   },
   {
-    heading: "Статус письма",
+    heading: "Статус отправки",
     value: "status",
     sortOptions: {
-      sortable: false,
+      sortable: false
     },
-    filterOptions: {},
-  },
+    filterOptions: {
+      filterByValue: "onlyFailed",
+      filterType: FILTER_TYPE_EQ,
+      filterValues: [
+        {
+          title: "Не успешно",
+          value: true
+        }
+      ],
+      filterDefaultValue: false
+    }
+  }
 ])
 
 const setPage = value => {
@@ -70,12 +88,38 @@ const setSort = value => {
   sort.value = value
 }
 
+const handleClearAllSettings = () => {
+  page.value = 1
+  filters.value = {}
+  sort.value = []
+}
+const setFilter = dataFilters => {
+  // dataFilters always is arr
+  filters.value = dataFilters.reduce((acc, item) => {
+    const type = typeof item.value
+    if (
+      (type === "object" && item.value?.length) ||
+      (type === "string" && item.value) ||
+      (type === "number" && item.value) ||
+      type === "boolean"
+    ) {
+      return {
+        ...acc,
+        [item.filterBy]: item.value
+      }
+    }
+
+    return acc
+  }, {})
+}
+
 watch(
-  [page, sort],
+  [page, sort, filters],
   () => {
     packageMemberDeliveryStatusReport(route.params.id, {
       page: page.value,
       row_page: size.value,
+      parameters: filters.value
     })
       .then(res => {
         list.value = res.items
@@ -83,7 +127,7 @@ watch(
           count: res.data_header.count,
           pages: res.data_header.count_pages,
           page: res.data_header.page,
-          size: res.data_header.row_page,
+          size: res.data_header.row_page
         }
       })
       .finally(() => {

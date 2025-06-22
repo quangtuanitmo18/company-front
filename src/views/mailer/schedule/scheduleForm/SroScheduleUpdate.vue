@@ -24,8 +24,7 @@
               ></v-select>
             </v-col>
 
-            <!-- Weekly frequency: day selection -->
-            <v-col v-if="schedule.scheduleFrequencyType === 'weekly'" cols="12" md="4">
+            <!-- <v-col v-if="schedule.scheduleFrequencyType === 'weekly'" cols="12" md="4">
               <v-select
                 variant="underlined"
                 v-model="schedule.weekDays"
@@ -35,7 +34,6 @@
                 label="Дни недели"
               ></v-select>
             </v-col>
-            <!-- Monthly frequency: day of month selection -->
             <v-col v-if="schedule.scheduleFrequencyType === 'monthly'" cols="12" md="4">
               <v-select
                 variant="underlined"
@@ -61,7 +59,6 @@
                 </template>
               </v-select>
             </v-col>
-            <!-- Yearly frequency: date in year selection -->
             <v-col v-if="schedule.scheduleFrequencyType === 'yearly'" cols="12" md="4">
               <date-picker
                 :teleport="true"
@@ -70,8 +67,8 @@
                 label="Дата в году"
                 :hide-details="true"
               />
-            </v-col>
-            <!-- <v-col cols="12" md="4">
+            </v-col> -->
+            <v-col cols="12" md="4">
               <v-text-field
                 variant="underlined"
                 type="number"
@@ -79,7 +76,7 @@
                 :rules="[v => !!/^\d+$/.test(v) || 'Только числа.']"
                 label="Количество"
               />
-            </v-col> -->
+            </v-col>
 
             <v-col cols="12" md="6">
               <date-hour-picker
@@ -129,7 +126,7 @@ import AppPageTitle from "@/layouts/AppPageTitle.vue"
 import {
   scheduleFrequencyDictionaryFilterMailer,
   taskDetail,
-  taskEdit,
+  taskEdit
 } from "@/service/mailer/packageScheduleService.js"
 import { typePackageDictionaryFilterMailer } from "@/service/mailer/packageService.js"
 import { WEEK_DAYS } from "@/utils/dictionary"
@@ -158,8 +155,8 @@ const handleBack = () => {
 const configActions = [
   {
     icon: "mdi-close",
-    handleFunc: handleBack,
-  },
+    handleFunc: handleBack
+  }
 ]
 
 // Days of month for monthly selection
@@ -181,7 +178,7 @@ const handleSubmit = async () => {
   const data = {
     sroOrganization: schedule.value.sroOrganization,
     packageType: schedule.value.packageType,
-    scheduleFrequency: schedule.value.scheduleFrequency || 1,
+    scheduleFrequency: schedule.value.scheduleFrequency,
     scheduleFrequencyType: schedule.value.scheduleFrequencyType,
     scheduleFromDttm: schedule.value.scheduleFromDttm
       ? schedule.value.scheduleFromDttm.replace(/-/g, ".")
@@ -190,21 +187,21 @@ const handleSubmit = async () => {
       ? schedule.value.scheduleUntilDttm.replace(/-/g, ".")
       : null,
     description: schedule.value.description,
-    enabled: schedule.value.enabled,
+    enabled: schedule.value.enabled
   }
 
   taskEdit(route.params.id, data)
     .then(res => {
       notion.value = {
         status: "success",
-        text: "Данные расписания успешно обновлены.",
+        text: "Данные расписания успешно обновлены."
       }
       errors.value = []
       schedule.value = {
         ...res.packageSchedule,
         sroOrganization: res.packageSchedule.sroOrganization.id,
         packageType: res.packageSchedule.package_type.package_type,
-        scheduleFrequencyType: res.packageSchedule.schedule_frequency_type.schedule_frequency_type,
+        scheduleFrequencyType: res.packageSchedule.schedule_frequency_type.schedule_frequency_type
       }
     })
     .catch(err => {
@@ -230,7 +227,7 @@ onMounted(() => {
       ...res.packageSchedule,
       sroOrganization: res.packageSchedule.sroOrganization.id,
       packageType: res.packageSchedule.package_type.package_type,
-      scheduleFrequencyType: res.packageSchedule.schedule_frequency_type.schedule_frequency_type,
+      scheduleFrequencyType: res.packageSchedule.schedule_frequency_type.schedule_frequency_type
     }
   })
 

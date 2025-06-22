@@ -1,54 +1,56 @@
 <template>
-  <template v-if="!loading">
-    <table-with-filter
-      :columns="columns"
-      :items="list"
-      :pagination="pagination"
-      :sort="sort"
-      :countFilters="countFilters"
-      :setPage="setPage"
-      :setSort="setSort"
-      :setFilter="setFilter"
-      :handleClickRow="handleClickRow"
-      @clear-all-settings="handleClearAllSettings"
-    >
-      <template #header-buttons>
-        <v-btn
-          v-if="headerInfo?.package?.packageStatus.status === 'created'"
-          @click="handlePackageGenerate"
-          min-width="46"
-          width="46"
-          height="46"
-          variant="flat"
-          title="Генерация документов"
-          class="table-head-icon"
-        >
-          <v-icon class="color-primary" size="x-large" icon="mdi-file-sign"></v-icon>
-        </v-btn>
-        <v-btn
-          v-if="headerInfo?.package?.packageStatus.status === 'generated'"
-          @click="handlePackageSend"
-          min-width="46"
-          width="46"
-          height="46"
-          variant="flat"
-          title="Рассылка писем"
-          class="table-head-icon"
-        >
-          <v-icon
-            class="color-primary"
-            size="x-large"
-            icon="mdi-invoice-text-send-outline"
-          ></v-icon>
-        </v-btn>
-      </template>
-    </table-with-filter>
-  </template>
-  <template v-else>
-    <div class="text-center py-10">
-      <v-progress-circular indeterminate class="color-primary" />
-    </div>
-  </template>
+  <div class="mt-4">
+    <template v-if="!loading">
+      <table-with-filter
+        :columns="columns"
+        :items="list"
+        :pagination="pagination"
+        :sort="sort"
+        :countFilters="countFilters"
+        :setPage="setPage"
+        :setSort="setSort"
+        :setFilter="setFilter"
+        :handleClickRow="handleClickRow"
+        @clear-all-settings="handleClearAllSettings"
+      >
+        <template #header-buttons>
+          <v-btn
+            v-if="headerInfo?.package?.packageStatus.status === 'created'"
+            @click="handlePackageGenerate"
+            min-width="46"
+            width="46"
+            height="46"
+            variant="flat"
+            title="Генерация документов"
+            class="table-head-icon"
+          >
+            <v-icon class="color-primary" size="x-large" icon="mdi-file-sign"></v-icon>
+          </v-btn>
+          <v-btn
+            v-if="headerInfo?.package?.packageStatus.status === 'generated'"
+            @click="handlePackageSend"
+            min-width="46"
+            width="46"
+            height="46"
+            variant="flat"
+            title="Рассылка писем"
+            class="table-head-icon"
+          >
+            <v-icon
+              class="color-primary"
+              size="x-large"
+              icon="mdi-invoice-text-send-outline"
+            ></v-icon>
+          </v-btn>
+        </template>
+      </table-with-filter>
+    </template>
+    <template v-else>
+      <div class="text-center py-10">
+        <v-progress-circular indeterminate class="color-primary" />
+      </div>
+    </template>
+  </div>
   <div v-if="notion" class="form-notion mt-4">
     <p class="form-notion-text" :class="{ [notion.status]: true }">{{ notion.text }}</p>
   </div>
@@ -70,11 +72,11 @@ import {
   memberStatusPackageDictionaryFilterMailer,
   packageGenerate,
   packageMemberDetails,
-  packageSend,
+  packageSend
 } from "@/service/mailer/packageService"
 import { FILTER_TYPE_DATE, FILTER_TYPE_EQ_WITH_SEARCH, FILTER_TYPE_LIKE } from "@/utils/dictionary"
 import { downloadFile } from "@/utils/files"
-import { computed, onMounted, ref, shallowRef, watch } from "vue"
+import { computed, ref, shallowRef, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { useStore } from "vuex"
 import PackageMemberDetailModal from "./PackageMemberDetailModal.vue"
@@ -82,8 +84,8 @@ import PackageMemberDetailModal from "./PackageMemberDetailModal.vue"
 const props = defineProps({
   data: {
     type: Object,
-    required: true,
-  },
+    required: true
+  }
 })
 const headerInfo = computed(() => props.data.headerInfo)
 
@@ -147,7 +149,7 @@ const handlePackageGenerate = () => {
     .catch(err => {
       notion.value = {
         status: "error",
-        text: err,
+        text: err
       }
     })
 }
@@ -160,7 +162,7 @@ const handlePackageSend = () => {
     .catch(err => {
       notion.value = {
         status: "error",
-        text: err,
+        text: err
       }
     })
 }
@@ -170,58 +172,58 @@ const columns = [
     heading: "ИНН",
     value: "memberInn",
     sortOptions: {
-      sortable: false,
+      sortable: false
     },
     filterOptions: {
       filterByValue: "inn",
-      filterType: FILTER_TYPE_LIKE,
-    },
+      filterType: FILTER_TYPE_LIKE
+    }
   },
   {
     heading: "Статус",
     value: "packageMemberStatus",
     subValue: "statusName",
     sortOptions: {
-      sortable: false,
+      sortable: false
     },
     filterOptions: {
       filterByValue: "packageMemberStatus",
       filterType: FILTER_TYPE_EQ_WITH_SEARCH,
-      filterApi: memberStatusPackageDictionaryFilterMailer,
-    },
+      filterApi: memberStatusPackageDictionaryFilterMailer
+    }
   },
   {
     heading: "Дата создания",
     value: "dttmCreated",
     sortOptions: {
-      sortable: false,
+      sortable: false
     },
     filterOptions: {
       filterByValue: "dttmCreated",
-      filterType: FILTER_TYPE_DATE,
-    },
+      filterType: FILTER_TYPE_DATE
+    }
   },
   {
     heading: "Дата генерации документов",
     value: "dttmGenerate",
     sortOptions: {
-      sortable: false,
+      sortable: false
     },
     filterOptions: {
       filterByValue: "dttmGenerate",
-      filterType: FILTER_TYPE_DATE,
-    },
+      filterType: FILTER_TYPE_DATE
+    }
   },
   {
     heading: "Дата отправки писем",
     value: "dttmSendEmail",
     sortOptions: {
-      sortable: false,
+      sortable: false
     },
     filterOptions: {
       filterByValue: "dttmSendEmail",
-      filterType: FILTER_TYPE_DATE,
-    },
+      filterType: FILTER_TYPE_DATE
+    }
   },
   {
     heading: "",
@@ -233,16 +235,16 @@ const columns = [
           {
             title: "isDocsGenerated",
             value: true,
-            equal: true,
-          },
+            equal: true
+          }
         ],
         type: "icon",
         icon: "mdi-download-box-outline",
         title: "Cкачать",
-        handleFunc: item => handleDownloadFile(item),
-      },
-    ],
-  },
+        handleFunc: item => handleDownloadFile(item)
+      }
+    ]
+  }
 ]
 
 const setPage = value => {
@@ -276,7 +278,7 @@ const setFilter = dataFilters => {
     ) {
       return {
         ...acc,
-        [item.filterBy]: item.value,
+        [item.filterBy]: item.value
       }
     }
 
@@ -293,7 +295,7 @@ watch(
       filters: filters.value,
       // convert sort to object
       sort_by: sort.value.reduce((acc, i) => ({ ...acc, [i.sortBy]: i.sortType }), {}),
-      search_string: search.value,
+      search_string: search.value
     })
       .then(res => {
         list.value = res.items
@@ -301,7 +303,7 @@ watch(
           count: res.data_header.count,
           pages: res.data_header.count_pages,
           page: res.data_header.page,
-          size: res.data_header.row_page,
+          size: res.data_header.row_page
         }
       })
       .finally(() => {

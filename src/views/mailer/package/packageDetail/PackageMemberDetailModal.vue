@@ -221,7 +221,7 @@ import { moneyFormat, shortDateFormat } from "@/utils/format.js"
 const props = defineProps({
   modelValue: Boolean,
   memberData: Object,
-  loading: Boolean,
+  loading: Boolean
 })
 
 const emit = defineEmits(["update:modelValue", "download-document"])
@@ -229,7 +229,7 @@ const emit = defineEmits(["update:modelValue", "download-document"])
 // Two-way binding cho v-model
 const isOpen = computed({
   get: () => props.modelValue,
-  set: value => emit("update:modelValue", value),
+  set: value => emit("update:modelValue", value)
 })
 
 const closeModal = () => {

@@ -300,7 +300,7 @@ onMounted(() => {
 </script>
 <style lang="scss" scoped>
 .table-block{
-  max-height: calc(100vh - 308px);
+  max-height: calc(100vh - 316px);
   overflow: auto;
 }
 .theme-list{

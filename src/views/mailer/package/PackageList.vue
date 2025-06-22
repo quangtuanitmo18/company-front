@@ -15,7 +15,15 @@
         @clear-all-settings="handleClearAllSettings"
       >
         <template #header-buttons>
-          <v-btn @click="createPackage" min-width="46" width="46" height="46" variant="flat" title="Создать" class="table-head-icon">
+          <v-btn
+            @click="createPackage"
+            min-width="46"
+            width="46"
+            height="46"
+            variant="flat"
+            title="Создать"
+            class="table-head-icon"
+          >
             <v-icon class="color-primary" size="x-large" icon="mdi-plus"></v-icon>
           </v-btn>
         </template>
@@ -31,43 +39,44 @@
 </template>
 
 <script setup>
-import { computed, ref, shallowRef, watch } from "vue";
+import { computed, ref, shallowRef, watch } from "vue"
 import {
   packageList,
   statusPackageDictionaryFilterMailer,
   typePackageDictionaryFilterMailer
-} from "@/service/mailer/packageService.js";
-import AppPageTitle from "@/layouts/AppPageTitle.vue";
-import { TableWithFilter } from "@/components/index.js";
+} from "@/service/mailer/packageService.js"
+import AppPageTitle from "@/layouts/AppPageTitle.vue"
+import { TableWithFilter } from "@/components/index.js"
 import {
-  FILTER_TYPE_DATE, FILTER_TYPE_EQ_MULTI_WITH_SEARCH,
+  FILTER_TYPE_DATE,
+  FILTER_TYPE_EQ_MULTI_WITH_SEARCH,
   FILTER_TYPE_EQ_WITH_SEARCH
-} from "@/utils/dictionary.js";
-import { useStore } from "vuex";
-import {sroOrgListForFilterMailer} from "@/service/ossa/clients/sroOrganizationService.js";
-import {useRouter} from "vue-router";
+} from "@/utils/dictionary.js"
+import { useStore } from "vuex"
+import { sroOrgListForFilterMailer } from "@/service/ossa/clients/sroOrganizationService.js"
+import { useRouter } from "vue-router"
 
-const router = useRouter();
-const page = ref(1);
-const search = ref("");
-const filters = shallowRef({});
-const sort = shallowRef([]);
+const router = useRouter()
+const page = ref(1)
+const search = ref("")
+const filters = shallowRef({})
+const sort = shallowRef([])
 // Example sort
 // const sort = [{
 //   sortBy: "id",
 //   sortType: "asc"
 // }]
 
-const detailsTo = "/mailer/members-in-package/";
+const detailsTo = "/mailer/members-in-package/"
 
-const store = useStore();
+const store = useStore()
 
-const list = shallowRef([]);
-const pagination = shallowRef({});
-const loading = ref(true);
+const list = shallowRef([])
+const pagination = shallowRef({})
+const loading = ref(true)
 
-const size = computed(() => store.getters["settings/rowPage"]);
-const countFilters = computed(() => Object.keys(filters.value).length);
+const size = computed(() => store.getters["settings/rowPage"])
+const countFilters = computed(() => Object.keys(filters.value).length)
 
 const columns = [
   {
@@ -75,76 +84,76 @@ const columns = [
     value: "packageType",
     subValue: "typeName",
     sortOptions: {
-      sortable: false,
+      sortable: false
     },
     filterOptions: {
-      filterByValue: 'packageType',
+      filterByValue: "packageType",
       filterType: FILTER_TYPE_EQ_WITH_SEARCH,
       filterApi: typePackageDictionaryFilterMailer
-    },
+    }
   },
   {
     heading: "Статус",
     value: "packageStatus",
     subValue: "statusName",
     sortOptions: {
-      sortable: false,
+      sortable: false
     },
     filterOptions: {
       // filterByValue: 'package_status',
       // filterType: FILTER_TYPE_EQ_WITH_SEARCH,
       // filterApi: statusPackageDictionaryFilterMailer
-    },
+    }
   },
   {
     heading: "Организация",
     value: "sroOrganization",
     subValue: "title",
     sortOptions: {
-      sortable: false,
+      sortable: false
     },
     filterOptions: {
-      filterByValue: 'sro',
+      filterByValue: "sro",
       filterType: FILTER_TYPE_EQ_MULTI_WITH_SEARCH,
       filterApi: sroOrgListForFilterMailer
-    },
+    }
   },
   {
     heading: "Дата создания",
     value: "dttmCreated",
     sortOptions: {
-      sortable: false,
+      sortable: false
     },
     filterOptions: {
       filterByValue: "dttmCreated",
-      filterType: FILTER_TYPE_DATE,
-    },
-  },
-];
+      filterType: FILTER_TYPE_DATE
+    }
+  }
+]
 
-const setPage = (value) => {
-  page.value = value;
-};
+const setPage = value => {
+  page.value = value
+}
 
-const setSort = (value) => {
-  sort.value = value;
-};
+const setSort = value => {
+  sort.value = value
+}
 
-const setSearch = (value) => {
-  search.value = value;
-};
+const setSearch = value => {
+  search.value = value
+}
 
 const handleClearAllSettings = () => {
-  page.value = 1;
-  filters.value = {};
-  sort.value = [];
-  search.value = "";
-};
+  page.value = 1
+  filters.value = {}
+  sort.value = []
+  search.value = ""
+}
 
-const setFilter = (dataFilters) => {
+const setFilter = dataFilters => {
   // dataFilters always is arr
   filters.value = dataFilters.reduce((acc, item) => {
-    const type = typeof item.value;
+    const type = typeof item.value
     if (
       (type === "object" && item.value?.length) ||
       (type === "string" && item.value) ||
@@ -153,15 +162,15 @@ const setFilter = (dataFilters) => {
     ) {
       return {
         ...acc,
-        [item.filterBy]: item.value,
-      };
+        [item.filterBy]: item.value
+      }
     }
 
-    return acc;
-  }, {});
-};
+    return acc
+  }, {})
+}
 
-const handleRedirect = (path) => {
+const handleRedirect = path => {
   router.push({ name: path })
 }
 
@@ -175,20 +184,22 @@ watch(
       row_page: size.value,
       filters: filters.value,
       // convert sort to object
-      sort_by: sort.value.reduce((acc, i) => ({...acc, [i.sortBy]: i.sortType}), {}),
+      sort_by: sort.value.reduce((acc, i) => ({ ...acc, [i.sortBy]: i.sortType }), {}),
       search_string: search.value
-    }).then(res => {
-      list.value = res.items
-      pagination.value = {
-        count: res.data_header.count,
-        pages: res.data_header.count_pages,
-        page: res.data_header.page,
-        size: res.data_header.row_page,
-      }
-    }).finally(() => {
-      loading.value = false
     })
+      .then(res => {
+        list.value = res.items
+        pagination.value = {
+          count: res.data_header.count,
+          pages: res.data_header.count_pages,
+          page: res.data_header.page,
+          size: res.data_header.row_page
+        }
+      })
+      .finally(() => {
+        loading.value = false
+      })
   },
   { immediate: true }
-);
+)
 </script>

@@ -34,8 +34,8 @@ const defaultFilters = () => {
       label: "Отдел",
       type: FILTER_TYPE_EQ_MULTI,
       selectValues: [],
-      api: employeeDepartmentForFilter,
-    },
+      api: employeeDepartmentForFilter
+    }
   ]
 }
 
@@ -57,7 +57,7 @@ const handleFilter = () => {
     ) {
       return {
         ...acc,
-        [item.filterBy]: item.value,
+        [item.filterBy]: item.value
       }
     }
 
@@ -75,7 +75,7 @@ watch(
   () => {
     calendarList({
       filters: filters.value,
-      parameters: getFirstAndLastDayOfMonth(selectedDate.value),
+      parameters: getFirstAndLastDayOfMonth(selectedDate.value)
     }).then(res => {
       events.value = res
 
@@ -87,14 +87,14 @@ watch(
           newConfigCalendars[calendar.calendarId] = {
             colorName: calendar.calendarId,
             lightColors:
-              COLOR_SCHEME_CALENDAR[Math.floor(Math.random() * COLOR_SCHEME_CALENDAR.length)],
+              COLOR_SCHEME_CALENDAR[Math.floor(Math.random() * COLOR_SCHEME_CALENDAR.length)]
           }
         }
       })
 
       store.commit("settings/setCalendars", {
         ...calendars.value,
-        ...newConfigCalendars,
+        ...newConfigCalendars
       })
     })
   },

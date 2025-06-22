@@ -16,13 +16,13 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from "vue"
-import { tasksCalendar } from "@/service/mailer/packageScheduleService"
-import { getDateNow, getFirstAndLastDayOfMonth } from "@/utils/format.js"
 import { CalendarCustom, Filters } from "@/components"
-import { COLOR_SCHEME_CALENDAR, FILTER_TYPE_EQ_CHECK } from "@/utils/dictionary.js"
-import { sroOrgListForFilterMailer } from "@/service/ossa/clients/sroOrganizationService.js"
+import { tasksCalendar } from "@/service/mailer/packageScheduleService"
 import { typePackageDictionaryFilterMailer } from "@/service/mailer/packageService.js"
+import { sroOrgListForFilterMailer } from "@/service/ossa/clients/sroOrganizationService.js"
+import { COLOR_SCHEME_CALENDAR, FILTER_TYPE_EQ_CHECK } from "@/utils/dictionary.js"
+import { getDateNow, getFirstAndLastDayOfMonth } from "@/utils/format.js"
+import { computed, ref, watch } from "vue"
 import { useStore } from "vuex"
 
 const store = useStore()
@@ -35,7 +35,7 @@ const defaultFilters = () => {
       label: "Тип пакета",
       type: FILTER_TYPE_EQ_CHECK,
       selectValues: "",
-      api: typePackageDictionaryFilterMailer,
+      api: typePackageDictionaryFilterMailer
     },
     {
       filterBy: "sroOrganization",
@@ -43,8 +43,8 @@ const defaultFilters = () => {
       label: "СРО",
       type: FILTER_TYPE_EQ_CHECK,
       selectValues: "",
-      api: sroOrgListForFilterMailer,
-    },
+      api: sroOrgListForFilterMailer
+    }
   ]
 }
 
@@ -55,7 +55,8 @@ const events = ref([])
 
 const countFilters = computed(() => Object.keys(filters.value).length)
 const calendars = computed(() => store.getters["settings/calendars"])
-const { startDate: date_start, endDate: date_end } = getFirstAndLastDayOfMonth(selectedDate.value)
+
+const dateRange = computed(() => getFirstAndLastDayOfMonth(selectedDate.value))
 
 const handleFilter = () => {
   filters.value = innerFilters.value.reduce((acc, item) => {
@@ -67,7 +68,7 @@ const handleFilter = () => {
     ) {
       return {
         ...acc,
-        [item.filterBy]: item.value,
+        [item.filterBy]: item.value
       }
     }
 
@@ -85,7 +86,7 @@ watch(
   () => {
     tasksCalendar({
       filters: filters.value,
-      parameters: { date_start, date_end },
+      parameters: { date_start: dateRange.value.startDate, date_end: dateRange.value.endDate }
     }).then(res => {
       events.value = res.calendar
 
@@ -95,14 +96,14 @@ watch(
           newConfigCalendars[calendar.calendarId] = {
             colorName: calendar.calendarId,
             lightColors:
-              COLOR_SCHEME_CALENDAR[Math.floor(Math.random() * COLOR_SCHEME_CALENDAR.length)],
+              COLOR_SCHEME_CALENDAR[Math.floor(Math.random() * COLOR_SCHEME_CALENDAR.length)]
           }
         }
       })
 
       store.commit("settings/setCalendars", {
         ...calendars.value,
-        ...newConfigCalendars,
+        ...newConfigCalendars
       })
     })
   },

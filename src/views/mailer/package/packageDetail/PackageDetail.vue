@@ -77,16 +77,16 @@
 </template>
 
 <script setup>
-import { h, onMounted, ref } from "vue"
-import { packageDetails } from "@/service/mailer/packageService.js"
 import AppPageTitle from "@/layouts/AppPageTitle.vue"
+import { packageDetails } from "@/service/mailer/packageService.js"
+import { onMounted, ref } from "vue"
 
-import { useRoute, useRouter } from "vue-router"
-import { shortDateFormat } from "@/utils/format.js"
-import PackageMembers from "./PackageMembers.vue"
-import PackageStatusMailing from "./PackageStatusMailing.vue"
-import PackageStatusDelivery from "./PackageStatusDelivery.vue"
 import Tabs from "@/components/Tabs.vue"
+import { shortDateFormat } from "@/utils/format.js"
+import { useRoute, useRouter } from "vue-router"
+import PackageMembers from "./PackageMembers.vue"
+import PackageStatusDelivery from "./PackageStatusDelivery.vue"
+import PackageStatusMailing from "./PackageStatusMailing.vue"
 
 const route = useRoute()
 const router = useRouter()
@@ -98,18 +98,18 @@ const configTabs = [
   {
     value: "members",
     title: "Список участников",
-    component: PackageMembers,
+    component: PackageMembers
   },
   {
     value: "mailStatus",
     title: "Статусы отправки писем",
-    component: PackageStatusMailing,
+    component: PackageStatusMailing
   },
   {
     value: "deliveryStatus",
-    title: "Статусы доставки пакета",
-    component: PackageStatusDelivery,
-  },
+    title: "Статусы отправки пакета",
+    component: PackageStatusDelivery
+  }
 ]
 const handleBack = () => {
   router.go(-1)

@@ -25,17 +25,15 @@
               ></v-select>
             </v-col>
 
-            <!-- <v-text-field
+            <v-text-field
               variant="underlined"
               type="number"
               v-model.number="schedule.scheduleFrequency"
               :rules="[v => !!/^\d+$/.test(v) || 'Только числа.']"
               label="Количество"
-              class="d-none"
-            /> -->
+            />
 
-            <!-- Weekly frequency: day selection -->
-            <v-col v-if="schedule.scheduleFrequencyType === 'weekly'" cols="12" md="4">
+            <!-- <v-col v-if="schedule.scheduleFrequencyType === 'weekly'" cols="12" md="4">
               <v-select
                 variant="underlined"
                 :items="WEEK_DAYS"
@@ -44,7 +42,6 @@
                 label="Дни недели"
               ></v-select>
             </v-col>
-            <!-- Monthly frequency: day of month selection -->
             <v-col v-if="schedule.scheduleFrequencyType === 'monthly'" cols="12" md="4">
               <v-select
                 variant="underlined"
@@ -69,7 +66,6 @@
                 </template>
               </v-select>
             </v-col>
-            <!-- Yearly frequency: date in year selection -->
             <v-col v-if="schedule.scheduleFrequencyType === 'yearly'" cols="12" md="4">
               <date-picker
                 :teleport="true"
@@ -78,7 +74,7 @@
                 label="Дата в году"
                 :hide-details="true"
               />
-            </v-col>
+            </v-col> -->
 
             <v-col cols="12" md="6">
               <date-hour-picker
@@ -127,7 +123,7 @@ import ErrorList from "@/components/notifications/ErrorList.vue"
 
 import {
   scheduleFrequencyDictionaryFilterMailer,
-  taskAdd,
+  taskAdd
 } from "@/service/mailer/packageScheduleService.js"
 import { typePackageDictionaryFilterMailer } from "@/service/mailer/packageService.js"
 import { WEEK_DAYS } from "@/utils/dictionary"
@@ -154,7 +150,7 @@ const schedule = ref({
   scheduleFromDttm: null,
   scheduleUntilDttm: null,
   description: null,
-  enabled: true,
+  enabled: true
 })
 
 // Days of month for monthly selection
@@ -173,8 +169,8 @@ const handleBack = () => {
 const configActions = [
   {
     icon: "mdi-close",
-    handleFunc: handleBack,
-  },
+    handleFunc: handleBack
+  }
 ]
 
 const handleSubmit = async () => {
@@ -187,7 +183,7 @@ const handleSubmit = async () => {
   const data = {
     sroOrganization: sroId.value,
     packageType: schedule.value.packageType,
-    scheduleFrequency: schedule.value.scheduleFrequency || 1,
+    scheduleFrequency: schedule.value.scheduleFrequency,
     scheduleFrequencyType: schedule.value.scheduleFrequencyType,
     scheduleFromDttm: schedule.value.scheduleFromDttm
       ? schedule.value.scheduleFromDttm.replace(/-/g, ".")
@@ -196,14 +192,14 @@ const handleSubmit = async () => {
       ? schedule.value.scheduleUntilDttm.replace(/-/g, ".")
       : null,
     description: schedule.value.description,
-    enabled: schedule.value.enabled,
+    enabled: schedule.value.enabled
   }
 
   taskAdd(data)
     .then(res => {
       notion.value = {
         status: "success",
-        text: "Расписание успешно создан.",
+        text: "Расписание успешно создан."
       }
       errors.value = []
       router.replace("/mailer/schedule")

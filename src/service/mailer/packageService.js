@@ -5,7 +5,7 @@ export const packageList = async data => {
     const { data: res } = await projectHTTPRequest({
       method: "post",
       url: `/api/package/packages`,
-      data,
+      data
     })
     return res
   } catch (err) {
@@ -18,7 +18,7 @@ export const packageDetails = async (id, data) => {
     const { data: res } = await projectHTTPRequest({
       method: "post",
       url: `/api/package/package/${id}`,
-      data,
+      data
     })
     return res
   } catch (err) {
@@ -31,7 +31,7 @@ export const membersInPackage = async (id, data) => {
     const { data: res } = await projectHTTPRequest({
       method: "post",
       url: `/api/package/package/${id}/members`,
-      data,
+      data
     })
     return res
   } catch (err) {
@@ -44,7 +44,7 @@ export const typeDictionaryPackage = async data => {
     const { data: res } = await projectHTTPRequest({
       method: "post",
       url: `/api/dictionary/package-type/show`,
-      data,
+      data
     })
 
     return res
@@ -59,7 +59,7 @@ export const typePackageDictionaryFilterMailer = async data => {
 
     return items.map(item => ({
       value: item.key,
-      title: item?.title || "None",
+      title: item?.title || "None"
     }))
   } catch (err) {
     throw err
@@ -71,7 +71,7 @@ export const statusDictionaryPackage = async data => {
     const { data: res } = await projectHTTPRequest({
       method: "post",
       url: `/api/dictionary/package-status/show`,
-      data,
+      data
     })
 
     return res
@@ -86,7 +86,7 @@ export const memberStatusPackageDictionaryFilterMailer = async data => {
 
     return items.map(item => ({
       value: item.key,
-      title: item?.title || "None",
+      title: item?.title || "None"
     }))
   } catch (err) {
     throw err
@@ -98,7 +98,7 @@ export const memberStatusDictionaryPackage = async data => {
     const { data: res } = await projectHTTPRequest({
       method: "post",
       url: `/api/dictionary/package-member-status/show`,
-      data,
+      data
     })
 
     return res
@@ -113,7 +113,7 @@ export const statusPackageDictionaryFilterMailer = async data => {
 
     return items.map(item => ({
       value: item.key,
-      title: item?.title || "None",
+      title: item?.title || "None"
     }))
   } catch (err) {
     throw err
@@ -125,7 +125,7 @@ export const packageMemberDetails = async (id, data) => {
     const { data: res } = await projectHTTPRequest({
       method: "post",
       url: `/api/package/member/${id}`,
-      data,
+      data
     })
     return res
   } catch (err) {
@@ -138,7 +138,7 @@ export const archiveDownload = async id => {
     return await projectHTTPRequest({
       method: "post",
       url: `/api/package/member/${id}/files/download`,
-      responseType: "blob",
+      responseType: "blob"
     })
   } catch (err) {
     throw err
@@ -151,7 +151,7 @@ export const linkDownload = async link => {
       method: "post",
       url: link,
 
-      responseType: "blob",
+      responseType: "blob"
     })
   } catch (err) {
     throw err
@@ -163,7 +163,7 @@ export const packageAdd = async (sro, data) => {
     const { data: res } = await projectHTTPRequest({
       method: "put",
       url: `/api/package/package/${sro}/add`,
-      data,
+      data
     })
     return res
   } catch (err) {
@@ -175,7 +175,7 @@ export const packageGenerate = async id => {
   try {
     const { data: res } = await projectHTTPRequest({
       method: "patch",
-      url: `/api/package/package/${id}/generate`,
+      url: `/api/package/package/${id}/generate`
     })
     return res
   } catch (err) {
@@ -187,7 +187,7 @@ export const packageSend = async id => {
   try {
     const { data: res } = await projectHTTPRequest({
       method: "patch",
-      url: `/api/package/package/${id}/send`,
+      url: `/api/package/package/${id}/send`
     })
     return res
   } catch (err) {

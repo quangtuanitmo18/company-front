@@ -17,7 +17,7 @@ const getters = {
     return state.user
   },
   isOperator(state) {
-    return state.projectUser?.projectData.user_type === "user_operator"
+    return state.projectUser?.roles.length === 1 && state.projectUser?.roles[0] === "ROLE_USER"
   },
   userRoles(state) {
     return state.projectUser?.roles || []

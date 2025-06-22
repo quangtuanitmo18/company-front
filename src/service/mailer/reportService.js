@@ -5,7 +5,7 @@ export const mailingStatusReport = async (id, data) => {
     const { data: res } = await projectHTTPRequest({
       method: "post",
       url: `/api/report/mailingStatus/package/${id}`,
-      data,
+      data
     })
     return res
   } catch (err) {
@@ -18,7 +18,7 @@ export const packageMemberDeliveryStatusReport = async (id, data) => {
     const { data: res } = await projectHTTPRequest({
       method: "post",
       url: `/api/report/packageMemberDelivery/package/${id}`,
-      data,
+      data
     })
     return res
   } catch (err) {
