@@ -1,4 +1,5 @@
 import store from "@/store"
+import { PERMISSIONS } from "@/utils/Permission"
 import { createRouter, createWebHistory } from "vue-router"
 
 const routes = [
@@ -37,7 +38,7 @@ const routes = [
     meta: {
       layout: "project-layout",
       title: "Сотрудники",
-      roleName: ["ROLE_EMPLOYEES_SHOW"]
+      roleName: [PERMISSIONS.EMPLOYEE.SHOW]
     },
     component: () => import("@/views/employees/EmployeeList.vue")
   },
@@ -46,7 +47,8 @@ const routes = [
     name: "employees-calendar",
     meta: {
       layout: "project-layout",
-      title: "Сотрудники"
+      title: "Сотрудники",
+      roleName: [PERMISSIONS.EMPLOYEE.SHOW]
     },
     component: () => import("@/views/employees/EmployeeCalendar.vue")
   },
@@ -56,7 +58,7 @@ const routes = [
     meta: {
       layout: "project-layout",
       title: "Сотрудники",
-      roleName: ["ROLE_EMPLOYEES_SHOW"]
+      roleName: [PERMISSIONS.EMPLOYEE.SHOW]
     },
     component: () => import("@/views/employees/EmployeeDetail.vue")
   },
@@ -66,7 +68,7 @@ const routes = [
     meta: {
       layout: "project-layout",
       title: "Сотрудники",
-      roleName: ["ROLE_EMPLOYEES_EDIT"]
+      roleName: [PERMISSIONS.EMPLOYEE.EDIT]
     },
     component: () => import("@/views/employees/employeeForm/EmployeeCreate.vue")
   },
@@ -76,7 +78,7 @@ const routes = [
     meta: {
       layout: "project-layout",
       title: "Сотрудники",
-      roleName: ["ROLE_EMPLOYEES_EDIT"]
+      roleName: [PERMISSIONS.EMPLOYEE.EDIT]
     },
     component: () => import("@/views/employees/employeeForm/EmployeeUpdate.vue")
   },
@@ -86,7 +88,7 @@ const routes = [
     meta: {
       layout: "project-layout",
       title: "Сотрудники",
-      roleName: ["ROLE_EMPLOYEES_EDIT_DICTIONARY"]
+      roleName: [PERMISSIONS.EMPLOYEE.EDIT_DICTIONARY]
     },
     component: () => import("@/views/employees/EmployeeDictionary.vue")
   },
@@ -281,7 +283,8 @@ const routes = [
     name: "package-list",
     meta: {
       layout: "project-layout",
-      title: "Рассылка"
+      title: "Рассылка",
+      roleName: [PERMISSIONS.MAILER.SHOW]
     },
     component: () => import("@/views/mailer/package/PackageList.vue")
   },
@@ -290,7 +293,8 @@ const routes = [
     name: "mailer-package-create",
     meta: {
       layout: "project-layout",
-      title: "Рассылка"
+      title: "Рассылка",
+      roleName: [PERMISSIONS.MAILER.EDIT]
     },
     component: () => import("@/views/mailer/package/PackageCreate.vue")
   },
@@ -299,7 +303,8 @@ const routes = [
     name: "members-in-package",
     meta: {
       layout: "project-layout",
-      title: "Рассылка"
+      title: "Рассылка",
+      roleName: [PERMISSIONS.MAILER.SHOW]
     },
     component: () => import("@/views/mailer/package/packageDetail/PackageDetail.vue")
   },
@@ -308,7 +313,8 @@ const routes = [
     name: "mailer-sro-list",
     meta: {
       layout: "project-layout",
-      title: "Рассылка"
+      title: "Рассылка",
+      roleName: [PERMISSIONS.MAILER.SHOW]
     },
     component: () => import("@/views/mailer/schedule/SroList.vue")
   },
@@ -317,7 +323,8 @@ const routes = [
     name: "mailer-sro-schedule-add",
     meta: {
       layout: "project-layout",
-      title: "Рассылка"
+      title: "Рассылка",
+      roleName: [PERMISSIONS.MAILER.EDIT]
     },
     component: () => import("@/views/mailer/schedule/scheduleForm/SroScheduleCreate.vue")
   },
@@ -326,7 +333,8 @@ const routes = [
     name: "mailer-sro-schedule-view",
     meta: {
       layout: "project-layout",
-      title: "Рассылка"
+      title: "Рассылка",
+      roleName: [PERMISSIONS.MAILER.SHOW]
     },
     component: () => import("@/views/mailer/schedule/SroScheduleDetail.vue")
   },
@@ -335,7 +343,8 @@ const routes = [
     name: "mailer-sro-schedule-edit",
     meta: {
       layout: "project-layout",
-      title: "Рассылка"
+      title: "Рассылка",
+      roleName: [PERMISSIONS.MAILER.EDIT]
     },
     component: () => import("@/views/mailer/schedule/scheduleForm/SroScheduleUpdate.vue")
   },
@@ -344,7 +353,8 @@ const routes = [
     name: "mailer-calendar",
     meta: {
       layout: "project-layout",
-      title: "Рассылка"
+      title: "Рассылка",
+      roleName: [PERMISSIONS.MAILER.SHOW]
     },
     component: () => import("@/views/mailer/calendar/MailerCalendar.vue")
   },
@@ -398,6 +408,7 @@ router.beforeEach(async (to, from, next) => {
   if (isAuth) {
     let userRoles = store.getters["auth/userRoles"]
     const requiredRoles = to.meta.roleName
+    console.log("requiredRoles", requiredRoles)
 
     if (!requiredRoles || requiredRoles.length === 0) {
       // Если нет roleName - роут общий для всех

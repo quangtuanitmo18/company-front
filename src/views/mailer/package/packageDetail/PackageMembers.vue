@@ -13,7 +13,7 @@
         :handleClickRow="handleClickRow"
         @clear-all-settings="handleClearAllSettings"
       >
-        <template #header-buttons>
+        <template #header-buttons v-if="canEdit">
           <v-btn
             v-if="headerInfo?.package?.packageStatus.status === 'created'"
             @click="handlePackageGenerate"
@@ -80,6 +80,7 @@ import { computed, ref, shallowRef, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { useStore } from "vuex"
 import PackageMemberDetailModal from "./PackageMemberDetailModal.vue"
+import { hasPermission, PERMISSIONS } from "@/utils/Permission"
 
 const props = defineProps({
   data: {
@@ -88,6 +89,8 @@ const props = defineProps({
   }
 })
 const headerInfo = computed(() => props.data.headerInfo)
+
+const canEdit = hasPermission(PERMISSIONS.MAILER.EDIT)
 
 const page = ref(1)
 const search = ref("")

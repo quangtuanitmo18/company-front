@@ -14,7 +14,7 @@
         :setFilter="setFilter"
         @clear-all-settings="handleClearAllSettings"
       >
-        <template #header-buttons>
+        <template #header-buttons v-if="canEdit">
           <v-btn
             @click="createPackage"
             min-width="46"
@@ -55,6 +55,7 @@ import {
 import { useStore } from "vuex"
 import { sroOrgListForFilterMailer } from "@/service/ossa/clients/sroOrganizationService.js"
 import { useRouter } from "vue-router"
+import { hasPermission, PERMISSIONS } from "@/utils/Permission"
 
 const router = useRouter()
 const page = ref(1)
@@ -66,6 +67,8 @@ const sort = shallowRef([])
 //   sortBy: "id",
 //   sortType: "asc"
 // }]
+
+const canEdit = hasPermission(PERMISSIONS.MAILER.EDIT)
 
 const detailsTo = "/mailer/members-in-package/"
 

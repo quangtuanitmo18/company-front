@@ -1,5 +1,9 @@
 <template>
-  <app-page-title iconClassname="mdi-account" title="Сотрудник" subtitle="Профиль сотрудника"></app-page-title>
+  <app-page-title
+    iconClassname="mdi-account"
+    title="Сотрудник"
+    subtitle="Профиль сотрудника"
+  ></app-page-title>
   <card-with-actions :title="`${employee.fio}`" :actions="configActions">
     <v-row>
       <v-col cols="2">
@@ -10,16 +14,18 @@
           <tbody>
             <tr>
               <td>Отдел</td>
-              <td>{{ transcript(employee.department?.id, departmentList)}}</td>
+              <td>{{ transcript(employee.department?.id, departmentList) }}</td>
             </tr>
             <tr>
               <td>Должность</td>
-              <td>{{ transcript(employee.post?.id, postList)}}</td>
+              <td>{{ transcript(employee.post?.id, postList) }}</td>
             </tr>
             <tr>
               <td>Emails</td>
               <td>
-                <p v-for="email in employee.emails"><a class="mail" :href="`mailto:${email}`">{{email}}</a></p>
+                <p v-for="email in employee.emails">
+                  <a class="mail" :href="`mailto:${email}`">{{ email }}</a>
+                </p>
               </td>
             </tr>
             <tr>
@@ -51,7 +57,10 @@
             <tr>
               <td>Отпуска</td>
               <td>
-                <p v-for="vacation in employee.vacations">{{ shortDateFormat(vacation.vacation.startDate) }} - {{ shortDateFormat(vacation.vacation.endDate) }}</p>
+                <p v-for="vacation in employee.vacations">
+                  {{ shortDateFormat(vacation.vacation.startDate) }} -
+                  {{ shortDateFormat(vacation.vacation.endDate) }}
+                </p>
               </td>
             </tr>
           </tbody>
@@ -61,15 +70,16 @@
   </card-with-actions>
 </template>
 <script setup>
-import AppPageTitle from "@/layouts/AppPageTitle.vue";
-import CardWithActions from "@/components/CardWithActions.vue";
-import {computed, onMounted, shallowRef} from "vue";
-import {useRoute, useRouter} from "vue-router";
-import {employeeDetail} from "@/service/employees/employeeService.js";
-import {shortDateFormat, transcript} from "@/utils/format.js";
-import {employeeDictionary} from "@/service/employees/dictionaryService.js";
-import Avatar from "@/components/avatar/Avatar.vue";
-import {useStore} from "vuex";
+import AppPageTitle from "@/layouts/AppPageTitle.vue"
+import CardWithActions from "@/components/CardWithActions.vue"
+import { computed, onMounted, shallowRef } from "vue"
+import { useRoute, useRouter } from "vue-router"
+import { employeeDetail } from "@/service/employees/employeeService.js"
+import { shortDateFormat, transcript } from "@/utils/format.js"
+import { employeeDictionary } from "@/service/employees/dictionaryService.js"
+import Avatar from "@/components/avatar/Avatar.vue"
+import { useStore } from "vuex"
+import { hasPermission, PERMISSIONS } from "@/utils/Permission"
 
 const store = useStore()
 const route = useRoute()
@@ -79,7 +89,7 @@ const employee = shallowRef({})
 const departmentList = shallowRef({})
 const postList = shallowRef({})
 
-const canEdit = computed(() => store.getters["auth/userRoles"].includes("ROLE_EMPLOYEES_EDIT"))
+const canEdit = hasPermission(PERMISSIONS.EMPLOYEE.EDIT)
 
 onMounted(() => {
   employeeDetail(route.params.id).then(res => {
@@ -87,11 +97,11 @@ onMounted(() => {
   })
 
   employeeDictionary("department").then(res => {
-    departmentList.value = res.items.map((item) => ({...item, value: item.id}))
+    departmentList.value = res.items.map(item => ({ ...item, value: item.id }))
   })
 
   employeeDictionary("post").then(res => {
-    postList.value = res.items.map((item) => ({...item, value: item.id}))
+    postList.value = res.items.map(item => ({ ...item, value: item.id }))
   })
 })
 
@@ -103,22 +113,24 @@ const redirectEdit = () => {
   router.push(`/employee/edit/${route.params.id}`)
 }
 
-const configActions = canEdit.value ? [
-  {
-    icon: "mdi-pencil",
-    title: "Редактировать",
-    handleFunc: redirectEdit
-  },
-  {
-    icon: "mdi-close",
-    title: "Закрыть",
-    handleFunc: handleBack,
-  }
-] : [
-  {
-    icon: "mdi-close",
-    title: "Закрыть",
-    handleFunc: handleBack,
-  }
-]
+const configActions = canEdit.value
+  ? [
+      {
+        icon: "mdi-pencil",
+        title: "Редактировать",
+        handleFunc: redirectEdit
+      },
+      {
+        icon: "mdi-close",
+        title: "Закрыть",
+        handleFunc: handleBack
+      }
+    ]
+  : [
+      {
+        icon: "mdi-close",
+        title: "Закрыть",
+        handleFunc: handleBack
+      }
+    ]
 </script>

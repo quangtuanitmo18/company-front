@@ -50,26 +50,6 @@
 
     <Tabs :configTabs="configTabs" :data="{ headerInfo: headerInfo }" />
 
-    <!-- <v-tabs v-model="activeTab" class="mt-4">
-      <v-tab value="members">Список участников</v-tab>
-      <v-tab value="mailStatus">Статусы отправки писем</v-tab>
-      <v-tab value="deliveryStatus">Статусы доставки пакета</v-tab>
-    </v-tabs>
-
-    <v-window v-model="activeTab" class="mt-4">
-      <v-window-item value="members">
-        <PackageMembers :header-info="headerInfo"></PackageMembers>
-      </v-window-item>
-
-      <v-window-item value="mailStatus">
-        <PackageStatusMailing></PackageStatusMailing>
-      </v-window-item>
-
-      <v-window-item value="deliveryStatus">
-        <PackageStatusDelivery></PackageStatusDelivery>
-      </v-window-item>
-    </v-window> -->
-
     <div class="card-footer d-flex justify-end mt-4">
       <v-btn color="primary" variant="outlined" @click="handleBack"> Назад </v-btn>
     </div>
