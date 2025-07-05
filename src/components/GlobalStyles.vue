@@ -847,6 +847,9 @@ div.dp__selection_preview {
     0px 3px 14px 2px var(--v-shadow-key-ambient-opacity, rgba(0, 0, 0, 0.12));
 }
 
+.sx__date-picker-wrapper {
+  width: 210px;
+}
 /*----- Panels -----*/
 .panel-header {
   background: var(--secondary) !important;

@@ -3,6 +3,8 @@
     <calendar-custom
       @update-date="date => (selectedDate = date)"
       :events="events"
+      :selectedDate="selectedDate"
+      :currentView="currentView"
     ></calendar-custom>
     <div class="filter-absolute">
       <Filters
@@ -52,6 +54,8 @@ const innerFilters = ref(defaultFilters())
 const filters = ref({})
 const selectedDate = ref(getDateNow())
 const events = ref([])
+
+const currentView = ref("month-grid") // Track the current view type
 
 const countFilters = computed(() => Object.keys(filters.value).length)
 const calendars = computed(() => store.getters["settings/calendars"])

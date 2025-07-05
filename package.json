@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
     "@schedule-x/calendar-controls": "^2.26.0",
     "@schedule-x/event-modal": "^2.14.3",
     "@schedule-x/events-service": "^2.15.0",
@@ -21,6 +22,7 @@
     "jwt-decode": "^4.0.0",
     "maska": "^2.1.11",
     "path": "^0.12.7",
+    "v-calendar": "^3.1.2",
     "vue": "^3.5.13",
     "vue-chartjs": "^5.3.2",
     "vue-cropperjs": "^5.0.0",

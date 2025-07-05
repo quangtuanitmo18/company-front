@@ -7,6 +7,7 @@
       :events="events"
       :currentView="currentView"
       @updateCurrentView="currentView = $event"
+      :canChangeViewMode
     ></calendar-custom>
     <div :class="['filter-absolute', { 'filter-absolute--year': currentView === 'year' }]">
       <Filters
@@ -50,6 +51,8 @@ const filters = ref({})
 const selectedDate = ref(getDateNow())
 const events = ref([])
 const currentView = ref("month-grid") // Track the current view type
+
+const canChangeViewMode = ref(true)
 
 const countFilters = computed(() => Object.keys(filters.value).length)
 const calendars = computed(() => store.getters["settings/calendars"])

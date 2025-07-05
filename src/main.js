@@ -2,10 +2,7 @@ import "@/assets/font/stylesheet.css"
 import "@mdi/font/css/materialdesignicons.css"
 import "@schedule-x/theme-default/dist/index.css" //calendar schedule
 import "@vuepic/vue-datepicker/dist/main.css"
-import "v-calendar/style.css"
 import "vuetify/styles"
-
-import VCalendar from "v-calendar"
 
 import router from "@/router"
 import store from "@/store"
@@ -55,9 +52,4 @@ const vuetify = createVuetify({
   directives
 })
 
-const app = createApp(App)
-
-// Use plugin with optional defaults
-app.use(VCalendar, {})
-
-app.use(store).use(router).use(vuetify).mount("#app")
+createApp(App).use(store).use(router).use(vuetify).mount("#app")

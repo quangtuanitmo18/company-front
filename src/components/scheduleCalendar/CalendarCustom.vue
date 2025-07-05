@@ -1,6 +1,6 @@
 <template>
   <div class="calendar-container">
-    <div class="calendar-header">
+    <div v-if="canChangeViewMode" class="calendar-header">
       <v-select
         v-if="currentView === 'year'"
         label="Тип календаря"
@@ -20,7 +20,7 @@
 
     <!-- Schedule-X Calendar -->
     <ScheduleXCalendar v-if="currentView !== 'year'" :calendar-app="calendarApp">
-      <template #headerContentRightPrepend="{ $app }">
+      <template v-if="canChangeViewMode" #headerContentRightPrepend="{ $app }">
         <v-select
           label="Тип календаря"
           :model-value="currentView"
@@ -50,7 +50,7 @@
   </div>
 </template>
 <script setup>
-import YearlyCalendar from "@/views/employees/YearlyCalendar.vue"
+import YearlyCalendar from "@/components/scheduleCalendar/YearlyCalendar.vue"
 import {
   createCalendar,
   createViewDay,
@@ -73,7 +73,12 @@ const eventsModalPlugin = createEventModalPlugin()
 const calendarControls = createCalendarControlsPlugin()
 
 const emit = defineEmits(["updateDate", "fetchDateRange", "update:currentView"])
-const { selectedDate, currentView, events } = defineProps(["selectedDate", "currentView", "events"])
+const { canChangeViewMode, selectedDate, currentView, events } = defineProps([
+  "canChangeViewMode",
+  "selectedDate",
+  "currentView",
+  "events"
+])
 
 const calendars = computed(() => store.getters["settings/calendars"])
 
