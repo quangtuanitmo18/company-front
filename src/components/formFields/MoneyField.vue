@@ -30,5 +30,5 @@ watch(() => model.value, (newValue, oldValue) => {
   }
 
   model.value = str
-})
+}, { immediate: true })
 </script>

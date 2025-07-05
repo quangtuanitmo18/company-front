@@ -21,7 +21,7 @@
                 v-model="schedule.scheduleFrequencyType"
                 :items="scheduleFrequencyTypeList"
                 :rules="[v => !!v || 'Это обязательное поле.']"
-                label="Частота *"
+                label="Переодичность *"
               ></v-select>
             </v-col>
 
@@ -29,8 +29,10 @@
               variant="underlined"
               type="number"
               v-model.number="schedule.scheduleFrequency"
-              :rules="[v => !!/^\d+$/.test(v) || 'Только числа.']"
-              label="Количество"
+              :rules="[v => (v >= 1 && v <= 5) || 'Значение должно быть от 1 до 5.']"
+              label="Переодичность повтора *"
+              min="1"
+              max="5"
             />
 
             <!-- <v-col v-if="schedule.scheduleFrequencyType === 'weekly'" cols="12" md="4">
@@ -116,7 +118,6 @@
 <script setup>
 import CardWithActions from "@/components/CardWithActions.vue"
 import DateHourPicker from "@/components/date/DateHourPicker.vue"
-import DatePicker from "@/components/date/DatePicker.vue"
 import AppPageTitle from "@/layouts/AppPageTitle.vue"
 
 import ErrorList from "@/components/notifications/ErrorList.vue"
@@ -126,7 +127,6 @@ import {
   taskAdd
 } from "@/service/mailer/packageScheduleService.js"
 import { typePackageDictionaryFilterMailer } from "@/service/mailer/packageService.js"
-import { WEEK_DAYS } from "@/utils/dictionary"
 import { printErrors } from "@/utils/handleErrors"
 import { computed, onMounted, ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
@@ -143,9 +143,11 @@ const notion = ref(null)
 const loading = ref(false)
 const errors = ref([])
 
+const scheduleNearestTasks = ref([])
+
 const schedule = ref({
   packageType: null,
-  scheduleFrequency: null,
+  scheduleFrequency: 1,
   scheduleFrequencyType: null,
   scheduleFromDttm: null,
   scheduleUntilDttm: null,

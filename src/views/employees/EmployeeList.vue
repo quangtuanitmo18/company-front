@@ -40,21 +40,20 @@
 </template>
 
 <script setup>
-import { computed, ref, shallowRef, watch } from "vue"
-import { employeeList } from "@/service/employees/employeeService.js"
-import AppPageTitle from "@/layouts/AppPageTitle.vue"
 import { TableWithFilter } from "@/components/index.js"
+import AppPageTitle from "@/layouts/AppPageTitle.vue"
+import {
+  employeeDepartmentForFilter,
+  employeePostForFilter
+} from "@/service/employees/dictionaryService.js"
+import { employeeList } from "@/service/employees/employeeService.js"
 import {
   FILTER_TYPE_EQ_MULTI,
   FILTER_TYPE_EQ_MULTI_WITH_SEARCH,
   FILTER_TYPE_LIKE
 } from "@/utils/dictionary.js"
+import { computed, ref, shallowRef, watch } from "vue"
 import { useStore } from "vuex"
-import {
-  employeeDepartmentForFilter,
-  employeePostForFilter
-} from "@/service/employees/dictionaryService.js"
-import { hasPermission, PERMISSIONS } from "@/utils/Permission"
 
 const page = ref(1)
 const search = ref("")
@@ -68,7 +67,7 @@ const sort = shallowRef([])
 
 const detailsTo = "/employee/view/"
 const createEmployee = "/employee/create"
-const searchHint = "Поиск по ФИО и номеру телефона"
+const searchHint = "Поиск по фамилии, имени, отчеству или номеру телефона"
 
 const store = useStore()
 
@@ -78,10 +77,21 @@ const loading = ref(true)
 
 const size = computed(() => store.getters["settings/rowPage"])
 const countFilters = computed(() => Object.keys(filters.value).length)
-
-const canEdit = hasPermission(PERMISSIONS.EMPLOYEE.EDIT)
+const canEdit = computed(() => store.getters["auth/userRoles"].includes("ROLE_EMPLOYEES_EDIT"))
 
 const columns = [
+  {
+    heading: "",
+    width: "80px",
+    value: "photo",
+    type: "image",
+    sortOptions: {
+      sortable: false
+    },
+    filterOptions: {
+      filterByValue: ""
+    }
+  },
   {
     heading: "ФИО",
     value: "fio",
@@ -111,6 +121,7 @@ const columns = [
   {
     heading: "Должность",
     value: "post",
+    tooltipValue: "functionality",
     subValue: "title",
     sortOptions: {
       sortable: true,
@@ -165,18 +176,6 @@ const columns = [
     filterOptions: {
       filterByValue: "emails",
       filterType: FILTER_TYPE_LIKE
-    }
-  },
-  {
-    heading: "",
-    width: "80px",
-    value: "photo",
-    type: "image",
-    sortOptions: {
-      sortable: false
-    },
-    filterOptions: {
-      filterByValue: ""
     }
   }
 ]

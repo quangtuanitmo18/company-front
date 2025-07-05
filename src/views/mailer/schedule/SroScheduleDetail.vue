@@ -1,25 +1,25 @@
 <template>
   <app-page-title iconClassname="mdi-send-clock" title="Расписание"></app-page-title>
-  <template v-if="!isLoadingDetail">
+  <template v-if="!isLoadingDetail && !isLoadingNearestTasks">
     <card-with-actions :actions="configActions">
       <v-row>
         <v-col cols="12">
           <v-table class="mt-4 table-view">
             <tbody>
               <tr>
-                <td>SRO</td>
+                <td>СРО</td>
                 <td>
                   {{ scheduleDetails?.packageSchedule?.sroOrganization?.title }}
                 </td>
               </tr>
               <tr>
-                <td>Type</td>
+                <td>Тип</td>
                 <td>
                   {{ scheduleDetails?.packageSchedule?.package_type?.package_type_name }}
                 </td>
               </tr>
               <tr>
-                <td>Frequency</td>
+                <td>Периодичность</td>
                 <td>
                   {{
                     scheduleDetails?.packageSchedule?.schedule_frequency_type
@@ -28,27 +28,38 @@
                 </td>
               </tr>
               <tr>
-                <td>Last Execute</td>
+                <td>Последнее отправление</td>
                 <td>
                   {{ shortDateHourFormat(scheduleDetails?.packageSchedule?.dttmLastExecuted) }}
                 </td>
               </tr>
               <tr>
-                <td>From</td>
+                <td>Дата начала</td>
                 <td>
                   {{ shortDateHourFormat(scheduleDetails?.packageSchedule?.scheduleFromDttm) }}
                 </td>
               </tr>
               <tr>
-                <td>Until</td>
+                <td>Дата окончания</td>
                 <td>
                   {{ shortDateHourFormat(scheduleDetails?.packageSchedule?.scheduleUntilDttm) }}
                 </td>
               </tr>
               <tr>
-                <td>Count</td>
+                <td>Отправлено</td>
                 <td>
                   {{ scheduleDetails?.packageSchedule?.countLaunches }}
+                </td>
+              </tr>
+              <tr>
+                <td>Ближайшие отправки</td>
+                <td>
+                  <div v-if="scheduleNearestTasks.length > 0">
+                    <div v-for="(task, index) in scheduleNearestTasks" :key="index" class="mb-1">
+                      {{ shortDateHourFormat(task) }}
+                    </div>
+                  </div>
+                  <div v-else class="text-muted">Нет ближайших отправок</div>
                 </td>
               </tr>
             </tbody>
@@ -76,14 +87,18 @@
 </template>
 
 <script setup>
-import CardWithActions from '@/components/CardWithActions.vue'
-import Modal from '@/components/Modal.vue'
-import { BtnPrimary, BtnSecondary } from '@/components/buttons/index.js'
-import AppPageTitle from '@/layouts/AppPageTitle.vue'
-import { taskDelete, taskDetail } from '@/service/mailer/packageScheduleService.js'
-import { shortDateHourFormat } from '@/utils/format.js'
-import { onMounted, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import CardWithActions from "@/components/CardWithActions.vue"
+import Modal from "@/components/Modal.vue"
+import { BtnPrimary, BtnSecondary } from "@/components/buttons/index.js"
+import AppPageTitle from "@/layouts/AppPageTitle.vue"
+import {
+  taskDelete,
+  taskDetail,
+  thressNerearestTasks
+} from "@/service/mailer/packageScheduleService.js"
+import { shortDateHourFormat } from "@/utils/format.js"
+import { onMounted, ref } from "vue"
+import { useRoute, useRouter } from "vue-router"
 
 const route = useRoute()
 const router = useRouter()
@@ -91,6 +106,9 @@ const router = useRouter()
 const scheduleId = ref()
 const scheduleDetails = ref({})
 const isLoadingDetail = ref(true)
+
+const scheduleNearestTasks = ref([])
+const isLoadingNearestTasks = ref(true)
 
 // Delete Action
 const isShowModal = ref(false)
@@ -112,26 +130,26 @@ const handleDelete = async () => {
 
   await taskDelete(route.params.id).then(res => {
     isLoadingDelete.value = false
-    location.replace('/mailer/schedule')
+    location.replace("/mailer/schedule")
   })
 }
 
 const configActions = [
   {
-    icon: 'mdi-pencil',
-    title: 'Редактировать',
-    handleFunc: redirectEdit,
+    icon: "mdi-pencil",
+    title: "Редактировать",
+    handleFunc: redirectEdit
   },
   {
-    icon: 'mdi-trash-can-outline',
-    title: 'Удалить',
-    handleFunc: redirectDelete,
+    icon: "mdi-trash-can-outline",
+    title: "Удалить",
+    handleFunc: redirectDelete
   },
   {
-    icon: 'mdi-close',
-    title: 'Закрыть',
-    handleFunc: handleBack,
-  },
+    icon: "mdi-close",
+    title: "Закрыть",
+    handleFunc: handleBack
+  }
 ]
 
 onMounted(() => {
@@ -140,6 +158,10 @@ onMounted(() => {
   taskDetail(scheduleId.value).then(res => {
     scheduleDetails.value = res
     isLoadingDetail.value = false
+  })
+  thressNerearestTasks({ id: scheduleId.value }).then(res => {
+    scheduleNearestTasks.value = res.next_starts
+    isLoadingNearestTasks.value = false
   })
 })
 </script>

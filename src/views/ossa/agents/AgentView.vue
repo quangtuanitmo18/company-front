@@ -5,7 +5,7 @@
         <div class="d-flex flex-column">
           <div class="d-flex">
             <p class="mr-1 color-secondary">Наименование:</p>
-            <p class="mr-4">{{info?.shortname}}</p>
+            <p class="mr-4">{{info?.fullname}}</p>
           </div>
           <div class="d-flex">
             <p class="mr-1 color-secondary">ИНН:</p>
@@ -18,9 +18,9 @@
         </div>
         <div class="agent-contacts">
           <div class="mr-4 d-flex ga-4">
-            <img width="52px" height="41px" alt="ЦСО" :src="cso" :class="{'image-disabled': !info.isCSO}"/>
-            <img width="52px" height="41px" alt="ССП" :src="ssp" :class="{'image-disabled': !info.isSSP}"/>
-            <img width="52px" height="41px" alt="ИГС" :src="igs" :class="{'image-disabled': !info.isIGS}"/>
+            <agent-view-icon :data="info.isCSO" alt="ЦСО" :src="cso"></agent-view-icon>
+            <agent-view-icon :data="info.isIGS" alt="ИГС" :src="igs"></agent-view-icon>
+            <agent-view-icon :data="info.isSSP" alt="ССП" :src="ssp"></agent-view-icon>
           </div>
           <card-contacts :contacts="contacts" :sro="info?.sro" @add-contact="handleAddContact"></card-contacts>
         </div>
@@ -63,14 +63,12 @@ import AppPageTitle from "@/layouts/AppPageTitle.vue";
 import {onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
 import {memberDoDetailFull} from "@/service/ossa/sqlup/memberDoService.js";
-import DetailCard from "@/views/ossa/agents/components/DetailCard.vue";
-import EventsDo from "@/views/ossa/agents/components/EventsDo.vue";
+import {DetailCard, CardContacts, Insurance, EventsDo, Right, ExtraData, Checks, Contracts, Reports} from "@/views/ossa/agents/components";
 import CardWithActions from "@/components/CardWithActions.vue";
-import {shortDateFormat} from "@/utils/format.js";
-import CardContacts from "@/views/ossa/agents/components/CardContacts.vue";
 import cso from "@/assets/images/cso.png";
 import ssp from "@/assets/images/ssp.png";
 import igs from "@/assets/images/igs.png";
+import AgentViewIcon from "@/views/ossa/agents/components/AgentViewIcon.vue";
 
 const route = useRoute()
 const info = ref(null)
@@ -90,6 +88,42 @@ const configTabs = [
     title: "Комментарии",
     icon: "mdi-clock",
     component: EventsDo
+  },
+  {
+    value: "insurances",
+    title: "Страховки",
+    icon: "mdi-security",
+    component: Insurance
+  },
+  {
+    value: "right",
+    title: "Право",
+    icon: "mdi-hand-front-right",
+    component: Right
+  },
+  {
+    value: "extra",
+    title: "Доп. информация",
+    icon: "mdi-information",
+    component: ExtraData
+  },
+  {
+    value: "checks",
+    title: "Проверки",
+    icon: "mdi-check-decagram",
+    component: Checks
+  },
+  {
+    value: "contracts",
+    title: "Контракты",
+    icon: "mdi-file-document-edit",
+    component: Contracts
+  },
+  {
+    value: "reports",
+    title: "Отчеты",
+    icon: "mdi-file-table-box-multiple",
+    component: Reports
   },
 ]
 
@@ -128,9 +162,5 @@ onMounted(() => {
   transform: translateY(-50%);
   display: flex;
   align-items: center;
-}
-.image-disabled{
-  filter: grayscale(1);
-  opacity: 0.3;
 }
 </style>

@@ -1,5 +1,5 @@
 import store from "@/store"
-import { PERMISSIONS } from "@/utils/Permission"
+import { PERMISSIONS } from "@/utils/permission.js"
 import { createRouter, createWebHistory } from "vue-router"
 
 const routes = [
@@ -99,7 +99,8 @@ const routes = [
     name: "auth-user",
     meta: {
       layout: "project-layout",
-      title: "Авторизация"
+      title: "Авторизация",
+      roleName: [PERMISSIONS.AUTH.SHOW_USER]
     },
     component: () => import("@/views/auth/UserList.vue")
   },
@@ -108,7 +109,8 @@ const routes = [
     name: "auth-user-detail",
     meta: {
       layout: "project-layout",
-      title: "Авторизация"
+      title: "Авторизация",
+      roleName: [PERMISSIONS.AUTH.SHOW_USER]
     },
     component: () => import("@/views/auth/UserDetail.vue")
   },
@@ -117,7 +119,8 @@ const routes = [
     name: "auth-user-create",
     meta: {
       layout: "project-layout",
-      title: "Авторизация"
+      title: "Авторизация",
+      roleName: [PERMISSIONS.AUTH.EDIT_USER]
     },
     component: () => import("@/views/auth/UserCreate.vue")
   },
@@ -126,7 +129,8 @@ const routes = [
     name: "auth-user-update",
     meta: {
       layout: "project-layout",
-      title: "Авторизация"
+      title: "Авторизация",
+      roleName: [PERMISSIONS.AUTH.EDIT_USER]
     },
     component: () => import("@/views/auth/UserUpdate.vue")
   },
@@ -135,7 +139,8 @@ const routes = [
     name: "auth-user-roles",
     meta: {
       layout: "project-layout",
-      title: "Авторизация"
+      title: "Авторизация",
+      roleName: [PERMISSIONS.AUTH.SHOW_ROLE]
     },
     component: () => import("@/views/auth/roles/RoleList.vue")
   },
@@ -144,7 +149,8 @@ const routes = [
     name: "auth-user-role-detail",
     meta: {
       layout: "project-layout",
-      title: "Авторизация"
+      title: "Авторизация",
+      roleName: [PERMISSIONS.AUTH.SHOW_ROLE]
     },
     component: () => import("@/views/auth/roles/RoleDetail.vue")
   },
@@ -153,7 +159,8 @@ const routes = [
     name: "auth-user-role-create",
     meta: {
       layout: "project-layout",
-      title: "Авторизация"
+      title: "Авторизация",
+      roleName: [PERMISSIONS.AUTH.EDIT_ROLE]
     },
     component: () => import("@/views/auth/roles/RoleCreate.vue")
   },
@@ -162,7 +169,8 @@ const routes = [
     name: "auth-user-role-update",
     meta: {
       layout: "project-layout",
-      title: "Авторизация"
+      title: "Авторизация",
+      roleName: [PERMISSIONS.AUTH.EDIT_ROLE]
     },
     component: () => import("@/views/auth/roles/RoleUpdate.vue")
   },
@@ -408,7 +416,6 @@ router.beforeEach(async (to, from, next) => {
   if (isAuth) {
     let userRoles = store.getters["auth/userRoles"]
     const requiredRoles = to.meta.roleName
-    console.log("requiredRoles", requiredRoles)
 
     if (!requiredRoles || requiredRoles.length === 0) {
       // Если нет roleName - роут общий для всех

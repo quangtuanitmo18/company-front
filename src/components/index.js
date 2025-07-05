@@ -7,3 +7,4 @@ export { default as DatePicker } from "./date/DatePicker.vue";
 export { default as Graphic } from "./Graphic.vue";
 export { default as Avatar } from "./avatar/Avatar.vue";
 export { default as CalendarCustom } from "./scheduleCalendar/CalendarCustom.vue";
+export { default as DetailBlocks } from "./detailBlocks/DetailBlocks.vue";

@@ -7,7 +7,7 @@
             <p class="card-title color-primary">{{item.heading}}</p>
             <div class="d-flex" v-for="i in item.items">
               <p :style="{'max-width': '240px'}" class="color-secondary">{{i.title}}</p>
-              <p class="card-body-value">: {{isObject(data[i.key]) ? formatColumn(i, data[i.key][i.subKey]) : formatColumn(i, data[i.key])}}</p>
+              <p class="card-body-value ml-1">{{isObject(data[i.key]) ? formatColumn(i, data[i.key][i.subKey]) : formatColumn(i, data[i.key])}}</p>
             </div>
           </v-card>
         </template>
@@ -119,6 +119,10 @@ const result = ref([
             type: "money"
           },
           {
+            title: "Количество месяцев просрочки (ЧВ Долг)",
+            key: "chvMonth",
+          },
+          {
             title: "ЦВ Начислено",
             key: "paymentShvAccrued",
             type: "money"
@@ -189,8 +193,8 @@ const result = ref([
             key: "timeDiff"
           },
           {
-            title: "Приостановка",
-            key: "vvStop",
+            title: "Основание приостановки",
+            key: "violations",
           },
           {
             title: "Представитель",
@@ -213,5 +217,10 @@ const result = ref([
 }
 .card-body-value{
   min-width: 10px;
+}
+.card-body-value::before{
+  content: ":";
+  margin-left: -4px;
+  margin-right: 4px;
 }
 </style>

@@ -5,40 +5,45 @@
       <v-row>
         <v-col cols="12" md="2">
           <v-select
-              variant="underlined"
-              v-model="role.enabled"
-              :items="STATUS"
-              label="Активна"
+            variant="underlined"
+            v-model="role.enabled"
+            :items="STATUS"
+            label="Активна"
           ></v-select>
         </v-col>
         <v-col cols="12" md="4">
           <v-text-field
-              variant="underlined"
-              v-model="role.title"
-              :rules="[v =>  !!v || 'Это обязательное поле.']"
-              label="Роль"
+            variant="underlined"
+            v-model="role.title"
+            :rules="[v => !!v || 'Это обязательное поле.']"
+            label="Роль"
           ></v-text-field>
         </v-col>
         <v-col cols="12" md="6">
           <v-text-field
-              variant="underlined"
-              v-model="role.description"
-              label="Описание"
+            variant="underlined"
+            v-model="role.description"
+            label="Описание"
           ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" md="12">
+          <v-checkbox v-model="role.isDefault" label="По умолчанию"></v-checkbox>
         </v-col>
       </v-row>
       <v-row>
         <v-col v-if="actions" cols="12" md="12">
           <checkbox-group-expanded
-              :key="checkBoxGroupId"
-              v-model="actionsCheckbox"
-              @checkbox-state="handleCheckBox"
-              :items="actions"
+            :key="checkBoxGroupId"
+            v-model="actionsCheckbox"
+            @checkbox-state="handleCheckBox"
+            :items="actions"
           />
         </v-col>
       </v-row>
       <div v-if="notion" class="form-notion mt-4">
-        <p class="form-notion-text" :class="{[notion.status]: true}">{{ notion.text }}</p>
+        <p class="form-notion-text" :class="{ [notion.status]: true }">{{ notion.text }}</p>
       </div>
     </v-form>
     <template v-slot:action>
@@ -50,17 +55,15 @@
 </template>
 
 <script setup>
+import AppPageTitle from "@/layouts/AppPageTitle.vue"
 
-import AppPageTitle from "@/layouts/AppPageTitle.vue";
-
-import { useRouter, useRoute } from "vue-router";
-import {onMounted, ref} from "vue";
-import CardWithActions from "@/components/CardWithActions.vue";
-import {userRoleDetail, userRoleUpdate} from "@/service/auth/users/userService.js";
-import {actionsList} from "@/service/auth/users/actionsService.js";
-import {BtnPrimary} from "@/components/buttons/index.js";
-import CheckboxGroup from "@/components/formFields/CheckboxGroup.vue";
-import CheckboxGroupExpanded from "@/components/formFields/CheckboxGroupExpanded.vue";
+import { BtnPrimary } from "@/components/buttons/index.js"
+import CardWithActions from "@/components/CardWithActions.vue"
+import CheckboxGroupExpanded from "@/components/formFields/CheckboxGroupExpanded.vue"
+import { actionsList } from "@/service/auth/users/actionsService.js"
+import { userRoleDetail, userRoleUpdate } from "@/service/auth/users/userService.js"
+import { onMounted, ref } from "vue"
+import { useRoute, useRouter } from "vue-router"
 
 const router = useRouter()
 const route = useRoute()
@@ -76,11 +79,11 @@ const actionsCheckbox = ref([])
 const STATUS = [
   {
     value: true,
-    title: 'Да'
+    title: "Да"
   },
   {
     value: false,
-    title: 'Нет'
+    title: "Нет"
   }
 ]
 
@@ -98,7 +101,7 @@ const configActions = [
 const handleSubmit = async () => {
   const { valid } = await form.value.validate()
 
-  if(!valid) return
+  if (!valid) return
   loadingSave.value = true
 
   userRoleUpdate(route.params.id, {
@@ -107,52 +110,56 @@ const handleSubmit = async () => {
     description: role.value.description,
     enabled: role.value.enabled,
     actions: actionsCheckbox.value
-  }).then(res => {
-    notion.value = {
-      status: "success",
-      text: "Данные пользователя успешно обновлены."
-    }
-    role.value = res.role
-
-    // Update checkbox
-    if (res.role && res.role.actions) {
-      res.role.actions.forEach(item => {
-        actionsCheckbox.value.push(item.id);
-      })
-
-      actionsList(role.value.project.id).then(res => {
-        roleActionsList.value = [...res.items];
-        actions.value = [];
-
-        roleActionsList.value.forEach(item => {
-          actions.value.push({
-            code: item.id,
-            title: item.title,
-            description: item.description
-          });
-        });
-      })
-    }
-  }).catch(err => {
-    notion.value = {
-      status: "error",
-      text: err
-    }
-  }).finally(() => {
-    loadingSave.value = false
   })
+    .then(res => {
+      notion.value = {
+        status: "success",
+        text: "Данные пользователя успешно обновлены."
+      }
+      role.value = res.role
+
+      // Update checkbox
+      if (res.role && res.role.actions) {
+        res.role.actions.forEach(item => {
+          actionsCheckbox.value.push(item.id)
+        })
+
+        actionsList(role.value.project.id).then(res => {
+          roleActionsList.value = [...res.items]
+          actions.value = []
+
+          roleActionsList.value.forEach(item => {
+            actions.value.push({
+              code: item.id,
+              title: item.title,
+              description: item.description
+            })
+          })
+        })
+      }
+      location.href = "/auth/roles"
+    })
+    .catch(err => {
+      notion.value = {
+        status: "error",
+        text: err
+      }
+    })
+    .finally(() => {
+      loadingSave.value = false
+    })
 }
 
 const handleCheckBox = (checkboxValue, checkboxState) => {
-  const index = actionsCheckbox.value.findIndex(item => item === checkboxValue);
+  const index = actionsCheckbox.value.findIndex(item => item === checkboxValue)
 
   if (checkboxState) {
     if (index < 0) {
-      actionsCheckbox.value.push(checkboxValue);
+      actionsCheckbox.value.push(checkboxValue)
     }
   } else {
     if (index >= 0) {
-      actionsCheckbox.value.splice(index, 1);
+      actionsCheckbox.value.splice(index, 1)
     }
   }
 }
@@ -160,32 +167,30 @@ const handleCheckBox = (checkboxValue, checkboxState) => {
 onMounted(() => {
   userRoleDetail(route.params.id).then(res => {
     role.value = {
-      ...res.role,
+      ...res.role
     }
 
     // Update checkbox
     if (res.role && res.role.actions) {
       res.role.actions.forEach(item => {
-        actionsCheckbox.value.push(item.id);
+        actionsCheckbox.value.push(item.id)
       })
 
       actionsList(role.value.project.id).then(res => {
-        roleActionsList.value = [...res.items];
-        actions.value = [];
+        roleActionsList.value = [...res.items]
+        actions.value = []
 
         roleActionsList.value.forEach(item => {
           actions.value.push({
             code: item.id,
             title: item.title,
             description: item.description
-          });
-        });
+          })
+        })
       })
     }
   })
 })
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

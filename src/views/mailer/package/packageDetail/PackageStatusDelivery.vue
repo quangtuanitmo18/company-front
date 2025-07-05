@@ -50,7 +50,8 @@ const columns = ref([
     sortOptions: {
       sortable: false
     },
-    filterOptions: {}
+    filterOptions: {},
+    align: "left"
   },
   {
     heading: "ИНН",

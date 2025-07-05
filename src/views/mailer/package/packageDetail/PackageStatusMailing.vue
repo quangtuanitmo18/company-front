@@ -50,7 +50,8 @@ const columns = ref([
     sortOptions: {
       sortable: false
     },
-    filterOptions: {}
+    filterOptions: {},
+    align: "left"
   },
   {
     heading: "ИНН",
@@ -66,10 +67,11 @@ const columns = ref([
     sortOptions: {
       sortable: false
     },
-    filterOptions: {}
+    filterOptions: {},
+    align: "left"
   },
   {
-    heading: "Статус письма",
+    heading: "Статус отправки",
     value: "status",
     sortOptions: {
       sortable: false

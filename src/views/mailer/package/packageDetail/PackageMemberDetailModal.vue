@@ -233,10 +233,6 @@ const closeModal = () => {
 }
 
 const onDownloadDocument = (link, document, member) => {
-  console.log("Link value:", link, typeof link)
-  console.log("Document:", document)
-  console.log("Member:", member)
-
   emit("download-document", link, document, member)
 }
 

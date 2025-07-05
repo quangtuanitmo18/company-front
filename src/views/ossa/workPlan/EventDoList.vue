@@ -290,7 +290,6 @@ watch([page, sort, filters], () => {
     // convert sort to object
     sort_by: sort.value.reduce((acc, i) => ({...acc, [i.sortBy]: i.sortType}), {}),
   }).then(res => {
-    console.log("res", res)
     list.value = res.items
     pagination.value = {
       count: res.data_header.count,

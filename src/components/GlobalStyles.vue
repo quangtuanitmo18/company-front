@@ -4,8 +4,8 @@
 
 <script>
 export default {
-  name: "GlobalStyles",
-};
+  name: "GlobalStyles"
+}
 </script>
 
 <style lang="scss">
@@ -73,6 +73,10 @@ input {
   font-family: "Neusa Next Pro", sans serif !important;
 }
 
+pre {
+  font-family: "Neusa Next Pro", sans serif !important;
+}
+
 ul {
   list-style: none;
 }
@@ -82,11 +86,11 @@ a[href] {
   text-decoration: none;
 }
 
-a.mail{
+a.mail {
   color: rgb(var(--color-primary));
 }
 
-a.mail:hover{
+a.mail:hover {
   text-decoration: underline;
 }
 
@@ -101,7 +105,7 @@ body {
   }
 }
 
-.body{
+.body {
   width: 100%;
   padding: 20px;
   margin-right: auto;
@@ -130,12 +134,16 @@ body {
   font-size: 16px;
 }
 
+.text-lg {
+  font-size: 18px;
+}
+
 .text-h1,
 .text-h2,
 .text-h3,
 .text-h4,
 .text-h5,
-.text-h6{
+.text-h6 {
   font-family: "Neusa Next Pro", sans serif !important;
 }
 
@@ -144,10 +152,9 @@ body {
   font-size: 15px;
 }
 
-.text-success{
+.text-success {
   color: var(--text-success);
 }
-
 
 .text-ellipsis {
   overflow: hidden;
@@ -419,7 +426,7 @@ table {
   background-color: #f5f5f5;
 }
 
-.table tbody tr{
+.table tbody tr {
   border: 1px solid transparent;
   outline: 1px solid transparent;
 }
@@ -437,22 +444,26 @@ table {
   background-color: var(--color-warning-table) !important;
 }
 
+.table tr.disabled {
+  opacity: 0.5;
+}
+
 .table tbody tr.error {
   background-color: var(--color-error-table) !important;
 }
 
-.table tbody tr.playing{
+.table tbody tr.playing {
   border: 1px solid rgb(var(--color-primary));
   outline: 1px solid rgb(var(--color-primary));
   animation: pulseBorderColor 3s linear infinite alternate;
 }
 
-div.v-table>.v-table__wrapper>table>tbody>tr>td,
-div.v-table>.v-table__wrapper>table>tbody>tr>th,
-div.v-table>.v-table__wrapper>table>thead>tr>td,
-div.v-table>.v-table__wrapper>table>thead>tr>th,
-div.v-table>.v-table__wrapper>table>tfoot>tr>td,
-div.v-table>.v-table__wrapper>table>tfoot>tr>th{
+div.v-table > .v-table__wrapper > table > tbody > tr > td,
+div.v-table > .v-table__wrapper > table > tbody > tr > th,
+div.v-table > .v-table__wrapper > table > thead > tr > td,
+div.v-table > .v-table__wrapper > table > thead > tr > th,
+div.v-table > .v-table__wrapper > table > tfoot > tr > td,
+div.v-table > .v-table__wrapper > table > tfoot > tr > th {
   padding: 0 12px;
 }
 
@@ -479,10 +490,9 @@ div.v-table>.v-table__wrapper>table>tfoot>tr>th{
   }
 }
 
-
-div.v-table__wrapper {
-  overflow: visible;
-}
+//div.v-table__wrapper {
+//  overflow: visible;
+//}
 
 //Table for view info
 .table-view table {
@@ -825,14 +835,16 @@ div.dp__selection_preview {
   border: none;
 }
 
-.sx__view-selection{
+.sx__view-selection {
   display: none;
 }
 
-.sx__date-picker-popup{
+.sx__date-picker-popup {
   max-height: 600px;
   overflow: hidden;
-  box-shadow: 0px 5px 5px -3px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)), 0px 8px 10px 1px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.14)), 0px 3px 14px 2px var(--v-shadow-key-ambient-opacity, rgba(0, 0, 0, 0.12))
+  box-shadow: 0px 5px 5px -3px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)),
+    0px 8px 10px 1px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.14)),
+    0px 3px 14px 2px var(--v-shadow-key-ambient-opacity, rgba(0, 0, 0, 0.12));
 }
 
 /*----- Panels -----*/
@@ -849,5 +861,4 @@ div.dp__selection_preview {
   font-weight: 400;
   color: #141e30;
 }
-
 </style>

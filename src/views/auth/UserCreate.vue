@@ -1,5 +1,8 @@
 <template>
-  <app-page-title iconClassname="mdi-account-plus-outline" title="Создать пользователя"></app-page-title>
+  <app-page-title
+    iconClassname="mdi-account-plus-outline"
+    title="Создать пользователя"
+  ></app-page-title>
   <card-with-actions title="" :actions="configActions">
     <v-form ref="form" class="mt-4">
       <v-row>
@@ -14,33 +17,33 @@
               <v-row>
                 <v-col cols="12" md="12">
                   <username-field
-                      v-model="user.username"
-                      :rules = "[
-                        v => /^\w+$/.test(v) || 'Допустимы только буквы, цифры и подчёркивание'
-                      ]"
+                    v-model="user.username"
+                    :rules="[
+                      v => /^\w+$/.test(v) || 'Допустимы только буквы, цифры и подчёркивание'
+                    ]"
                   ></username-field>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col cols="12" md="12">
                   <password-field
-                      variant="underlined"
-                      v-model="user.pass"
-                      :rules="[
-                (v) => !!v || 'Это обязательное поле.',
-                (v) => v.length >= 8 || 'Пароль не может быть короче 8-ми символов.',
-              ]"
-                      label="Пароль *"
+                    variant="underlined"
+                    v-model="user.pass"
+                    :rules="[
+                      v => !!v || 'Это обязательное поле.',
+                      v => v.length >= 8 || 'Пароль не может быть короче 8-ми символов.'
+                    ]"
+                    label="Пароль *"
                   ></password-field>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col cols="12" md="12">
                   <password-confirm-field
-                      variant="underlined"
-                      v-model="passwordConfirm"
-                      :password="user.pass"
-                      label="Пароль *"
+                    variant="underlined"
+                    v-model="passwordConfirm"
+                    :password="user.pass"
+                    label="Пароль *"
                   ></password-confirm-field>
                 </v-col>
               </v-row>
@@ -59,38 +62,38 @@
               <v-row>
                 <v-col cols="12" md="12">
                   <v-text-field
-                      variant="underlined"
-                      v-model="user.email"
-                      :rules="[
-                v =>  !!v || 'Это обязательное поле.',
-                v => !!(/.+@.+\..+/.test(v)) || 'Email не правильный.'
-              ]"
-                      label="Email *"
+                    variant="underlined"
+                    v-model="user.email"
+                    :rules="[
+                      v => !!v || 'Это обязательное поле.',
+                      v => !!/.+@.+\..+/.test(v) || 'Почта не правильная.'
+                    ]"
+                    label="Почта *"
                   ></v-text-field>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col cols="12" md="4">
                   <v-text-field
-                      variant="underlined"
-                      v-model="user.surname"
-                      :rules="[v =>  !!v || 'Это обязательное поле.']"
-                      label="Фамилия *"
+                    variant="underlined"
+                    v-model="user.surname"
+                    :rules="[v => !!v || 'Это обязательное поле.']"
+                    label="Фамилия *"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="4">
                   <v-text-field
-                      variant="underlined"
-                      v-model="user.firstname"
-                      :rules="[v =>  !!v || 'Это обязательное поле.']"
-                      label="Имя *"
+                    variant="underlined"
+                    v-model="user.firstname"
+                    :rules="[v => !!v || 'Это обязательное поле.']"
+                    label="Имя *"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="4">
                   <v-text-field
-                      variant="underlined"
-                      v-model="user.lastname"
-                      label="Отчество"
+                    variant="underlined"
+                    v-model="user.lastname"
+                    label="Отчество"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -104,36 +107,32 @@
         </v-col>
       </v-row>
       <div v-if="notion" class="form-notion mt-4">
-        <p class="form-notion-text" :class="{[notion.status]: true}">{{ notion.text }}</p>
-        <error-list :errors="errors" />
+        <p class="form-notion-text" :class="{ [notion.status]: true }">{{ notion.text }}</p>
       </div>
+      <template v-if="errors.length">
+        <error-list :errors="errors" />
+      </template>
     </v-form>
     <template v-slot:action>
-      <btn-primary class="ml-2" :loading="loadingSave" @click="handleSubmit">
-        Создать
-      </btn-primary>
+      <btn-primary class="ml-2" :loading="loadingSave" @click="handleSubmit"> Создать </btn-primary>
     </template>
   </card-with-actions>
 </template>
 
 <script setup>
-
-import AppPageTitle from "@/layouts/AppPageTitle.vue";
-import CardWithActions from "@/components/CardWithActions.vue";
-import { useRouter, useRoute } from "vue-router";
-import {onMounted, ref, watch} from "vue";
-import {DEPARTMENTS_LIST, FILTER_USER_STATUS, OPERATOR_STATUS} from "@/utils/dictionary.js";
-import {BtnPrimary} from "@/components/buttons/index.js";
-import {userCreate, userRoleList, userRoleListByGroupForFilter} from "@/service/auth/users/userService.js";
+import { BtnPrimary } from "@/components/buttons/index.js"
+import CardWithActions from "@/components/CardWithActions.vue"
 import {
   PasswordConfirmField,
   PasswordField,
-  PhoneField,
-  SelectByGroup, SelectByGroupField,
   UsernameField
-} from "@/components/formFields/index.js";
-import ErrorList from "@/components/notifications/ErrorList.vue";
-import {printErrors} from "@/utils/handleErrors.js";
+} from "@/components/formFields/index.js"
+import ErrorList from "@/components/notifications/ErrorList.vue"
+import AppPageTitle from "@/layouts/AppPageTitle.vue"
+import { userCreate, userRoleListByGroupForFilter } from "@/service/auth/users/userService.js"
+import { printErrors } from "@/utils/handleErrors.js"
+import { onMounted, ref } from "vue"
+import { useRoute, useRouter } from "vue-router"
 
 const router = useRouter()
 const route = useRoute()
@@ -159,27 +158,29 @@ const handleBack = () => {
 const handleSubmit = async () => {
   const { valid } = await form.value.validate()
 
-  if(!valid) return
+  if (!valid) return
 
   loadingSave.value = true
-  userCreate(user.value).then(res => {
-    window.location.href = "/auth"
-  }).then(res => {
-    notion.value = {
-      status: "success",
-      text: "Пользователь успешно создан."
-    }
-    user.value = res.user
-  }).catch(err => {
-    if (err.validationErrors) {
-      errors.value = printErrors(err.validationErrors)
-    } else {
-      errors.value.push(err)
-    }
-
-  }).finally(() => {
-    loadingSave.value = false
-  })
+  userCreate(user.value)
+    .then(res => {
+      errors.value = []
+      notion.value = {
+        status: "success",
+        text: "Пользователь успешно создан."
+      }
+      window.location.href = "/auth"
+    })
+    .catch(err => {
+      if (err.validationErrors) {
+        errors.value = printErrors(err.validationErrors)
+      } else {
+        errors.value.push(err)
+      }
+      console.log("errors", errors.value)
+    })
+    .finally(() => {
+      loadingSave.value = false
+    })
 }
 
 const configActions = [
@@ -194,12 +195,11 @@ onMounted(() => {
     roleSelect.value = res
   })
 })
-
 </script>
 
 <style scoped>
-  .justify-end {
-    display: flex;
-    justify-content: flex-end;
-  }
+.justify-end {
+  display: flex;
+  justify-content: flex-end;
+}
 </style>

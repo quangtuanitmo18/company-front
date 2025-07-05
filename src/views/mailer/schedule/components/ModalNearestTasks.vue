@@ -40,7 +40,7 @@
 
         <v-col cols="12" class="mt-2">
           <v-card elevation="2" class="pa-2">
-            <p class="text-h6 mb-3">Ближайшие отправки:</p>
+            <p class="font-weight-bold mb-3">Ближайшие отправки:</p>
 
             <!-- Loading state -->
             <template v-if="isLoadingModalTaskNearest">
@@ -65,7 +65,7 @@
             <template v-else>
               <div class="text-center pa-4">
                 <v-icon color="grey" size="large">mdi-calendar-remove</v-icon>
-                <p class="mt-2">Нет запланированных задач</p>
+                <p class="mt-2">Нет ближайших отправок</p>
               </div>
             </template>
           </v-card>

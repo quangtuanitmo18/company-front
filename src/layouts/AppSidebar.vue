@@ -3,8 +3,8 @@
     <div class="sidebar__body-bg" :style="{backgroundImage: `url(${bg[projectId]})`}"></div>
     <div class="sidebar__head">
       <div class="d-flex logo">
-        <img v-if="logo[projectId]?.icon" :alt="logo[projectId].title" :src="logo[projectId].icon" />
-        <p style="font-size: 36px; font-weight: 900; color: #f4d9d9; font-style: italic" v-else>{{ logo[projectId]?.title }}</p>
+        <img v-if="logo[projectId].icon" :alt="logo[projectId].title" :src="logo[projectId].icon" />
+        <p style="font-size: 36px; font-weight: 900; color: #f4d9d9; font-style: italic" v-else>{{ logo[projectId].title }}</p>
       </div>
       <div @click="toggleSideBar" class="hamburger-box hamburger--elastic" :class="{'active': !isCloseSidebar}">
         <span class="hamburger-inner"></span>
@@ -169,7 +169,7 @@ onMounted(async () => {
     &:not(.sidebar-open) .sidebar__body-inner-title{
       color: transparent;
       position: relative;
-      
+
       &::after{
         content: "";
         display: block;

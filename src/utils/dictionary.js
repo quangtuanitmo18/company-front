@@ -11,39 +11,40 @@ export const FILTER_TYPE_DATE_TIME = 10 // Type input is date&time
 export const FILTER_TYPE_EDITABLE = 11 // Type input is editable
 export const FILTER_TYPE_EQ_BY_GROUP = 12 // Type input is multi select by group
 export const FILTER_TYPE_MONEY = 13 // Type input is money format "12 000"
+export const FILTER_TYPE_LIKE_PRE = 14 // Type input is text but need to keep the format with pre tag
 
 export const CALL_TYPES = [
   {
     value: "outgoing",
-    title: "Исходящий",
+    title: "Исходящий"
   },
   {
     value: "incoming",
-    title: "Входящий",
-  },
+    title: "Входящий"
+  }
 ]
 
 export const DISPOSITION_TYPES = [
   {
     value: "ANSWERED",
     title: "Успешно",
-    color: "#73A839",
+    color: "#73A839"
   },
   {
     value: "NO ANSWER",
     title: "Нет ответа",
-    color: "#ff9005",
+    color: "#ff9005"
   },
   {
     value: "FAILED",
     title: "Ошибка",
-    color: "#d85610",
+    color: "#d85610"
   },
   {
     value: "BUSY",
     title: "Занято",
-    color: "#d8101c",
-  },
+    color: "#d8101c"
+  }
 ]
 
 export const DISPOSITION_TYPES_OUTGOING = [
@@ -51,26 +52,26 @@ export const DISPOSITION_TYPES_OUTGOING = [
     value: "ANSWERED",
     title: "Успешно",
     color: "#73A839",
-    icon: "mdi-phone-outgoing",
+    icon: "mdi-phone-outgoing"
   },
   {
     value: "NO ANSWER",
     title: "Нет ответа",
     color: "#ff9005",
-    icon: "mdi-phone-outgoing",
+    icon: "mdi-phone-outgoing"
   },
   {
     value: "FAILED",
     title: "Ошибка",
     color: "#d85610",
-    icon: "mdi-phone-outgoing",
+    icon: "mdi-phone-outgoing"
   },
   {
     value: "BUSY",
     title: "Занято",
     color: "#d8101c",
-    icon: "mdi-phone-outgoing",
-  },
+    icon: "mdi-phone-outgoing"
+  }
 ]
 
 export const DISPOSITION_TYPES_INCOMING = [
@@ -78,72 +79,72 @@ export const DISPOSITION_TYPES_INCOMING = [
     value: "ANSWERED",
     title: "Успешно",
     color: "#73A839",
-    icon: "mdi-phone-incoming",
+    icon: "mdi-phone-incoming"
   },
   {
     value: "NO ANSWER",
     title: "Нет ответа",
     color: "#ff9005",
-    icon: "mdi-phone-incoming",
+    icon: "mdi-phone-incoming"
   },
   {
     value: "FAILED",
     title: "Ошибка",
     color: "#d85610",
-    icon: "mdi-phone-incoming",
+    icon: "mdi-phone-incoming"
   },
   {
     value: "BUSY",
     title: "Занято",
     color: "#d8101c",
-    icon: "mdi-phone-incoming",
-  },
+    icon: "mdi-phone-incoming"
+  }
 ]
 
 export const GRAPHIC_COLORS_CALL_INCOMING = [
   {
     value: "answered",
-    color: "#24ab24",
+    color: "#24ab24"
   },
   {
     value: "noAnswer",
-    color: "#ff9005",
+    color: "#ff9005"
   },
   {
     value: "incomingMobile",
-    color: "#7091E6",
+    color: "#7091E6"
   },
   {
     value: "incomingLandline",
-    color: "#3D52A0",
-  },
+    color: "#3D52A0"
+  }
 ]
 
 export const GRAPHIC_COLORS_CALL_OUTGOING = [
   {
     value: "answered",
-    color: "#24ab24",
+    color: "#24ab24"
   },
   {
     value: "noAnswer",
-    color: "#ff9005",
+    color: "#ff9005"
   },
   {
     value: "busy",
-    color: "#d8101c",
+    color: "#d8101c"
   },
   {
     value: "error",
-    color: "#d85610",
+    color: "#d85610"
   },
   {
     value: "outgoingMobile",
-    color: "#7091E6",
+    color: "#7091E6"
   },
   {
     value: "outgoingLandline",
-    color: "#3D52A0",
-  },
+    color: "#3D52A0"
+  }
 ]
 
 export const DO_RING_STATUS = [
@@ -151,26 +152,26 @@ export const DO_RING_STATUS = [
     value: 4,
     title: "Входящий звонок",
     color: "#1f1f9d",
-    icon: "mdi-phone-incoming",
+    icon: "mdi-phone-incoming"
   },
   {
     value: 2,
     title: "Недозвон",
     color: "#d8101c",
-    icon: "mdi-phone-remove",
+    icon: "mdi-phone-remove"
   },
   {
     value: 3,
     title: "Просили перезвонить",
     color: "#ff9005",
-    icon: "mdi-phone-alert",
+    icon: "mdi-phone-alert"
   },
   {
     value: 1,
     title: "Успешный звонок",
     color: "#73A839",
-    icon: "mdi-phone-check",
-  },
+    icon: "mdi-phone-check"
+  }
 ]
 
 export const TYPE_PHONE = 1
@@ -182,48 +183,48 @@ export const TYPE_POST = 20
 export const CONTACT_TYPES = [
   {
     value: TYPE_PHONE,
-    title: "Телефон",
+    title: "Телефон"
   },
   {
     value: TYPE_MAIL,
-    title: "E-mail",
+    title: "E-mail"
   },
   {
     value: TYPE_SITE,
-    title: "Сайт",
+    title: "Сайт"
   },
   {
     value: TYPE_FAX,
-    title: "Факс",
+    title: "Факс"
   },
   {
     value: TYPE_POST,
-    title: "Почтовый адрес",
-  },
+    title: "Почтовый адрес"
+  }
 ]
 
 export const EXCHANGE_TYPES = [
   {
     value: "landline",
-    title: "Стационарный",
+    title: "Стационарный"
   },
   {
     value: "mobile",
-    title: "Мобильный",
-  },
+    title: "Мобильный"
+  }
 ]
 
 const USER_ENABLED = {
   value: true,
   title: "Активен",
   color: "#73A839",
-  icon: "mdi-check-circle",
+  icon: "mdi-check-circle"
 }
 const USER_DISABLED = {
   value: false,
   title: "Неактивен",
   color: "#d8101c",
-  icon: "mdi-close-circle",
+  icon: "mdi-close-circle"
 }
 
 export const FILTER_USER_STATUS = [USER_ENABLED, USER_DISABLED]
@@ -234,77 +235,92 @@ export const ERROR_MESSAGE_500 = "Непредвиденная ошибка се
 
 const IS_OPERATOR = {
   value: 1,
-  title: "Да",
+  title: "Да"
 }
 const IS_NOT_OPERATOR = {
   value: 0,
-  title: "Нет",
+  title: "Нет"
 }
 
 export const OPERATOR_STATUS = [IS_OPERATOR, IS_NOT_OPERATOR]
 
 const CLIENT_DEPARTMENT = {
   value: 1,
-  title: "Клиентский отдел",
+  title: "Клиентский отдел"
 }
 const ADMISSIONS_DEPARTMENT = {
   value: 2,
-  title: "Приемный отдел",
+  title: "Приемный отдел"
 }
 
 const CONTROL_DEPARTMENT = {
   value: 3,
-  title: "Контрольный отдел",
+  title: "Контрольный отдел"
 }
 
 export const DEPARTMENTS_LIST = [CLIENT_DEPARTMENT, ADMISSIONS_DEPARTMENT, CONTROL_DEPARTMENT]
 
 export const COLOR_SCHEME_CALENDAR = [
   {
+    // yellow
     main: "#f9d71c",
     container: "#fff5aa",
-    onContainer: "#594800",
+    onContainer: "#594800"
   },
   {
+    // red
     main: "#f91c45",
     container: "#ffd2dc",
-    onContainer: "#59000d",
+    onContainer: "#59000d"
   },
   {
+    // teal
     main: "#1cf9b0",
     container: "#dafff0",
-    onContainer: "#004d3d",
+    onContainer: "#004d3d"
   },
   {
+    // blue
     main: "#1c7df9",
     container: "#d2e7ff",
-    onContainer: "#002859",
+    onContainer: "#002859"
   },
   {
+    // orange
     main: "#f9a11c",
     container: "#ffedda",
-    onContainer: "#4d2e00",
+    onContainer: "#4d2e00"
   },
   {
+    // purple
     main: "#b11cf9",
     container: "#f7daff",
-    onContainer: "#3d004d",
+    onContainer: "#3d004d"
   },
   {
+    // green
     main: "#1ce8f9",
     container: "#dafffe",
-    onContainer: "#004d4c",
+    onContainer: "#004d4c"
   },
   {
-    main: "#d4f91c",
-    container: "#e9ffd2",
-    onContainer: "#305900",
+    // gray
+    main: "#4b5563",
+    container: "#e4e4e7",
+    onContainer: "#1f1f1f"
   },
   {
-    main: "#30f91c",
-    container: "#d2ffd4",
-    onContainer: "#005910",
+    // pink
+    main: "#ec4899",
+    container: "#fff1f7",
+    onContainer: "#4d004d"
   },
+  {
+    // indigo
+    main: "#4b0082",
+    container: "#e4e4e7",
+    onContainer: "#1f1f1f"
+  }
 ]
 
 export const DICTIONARY_STATUS = [
@@ -312,14 +328,14 @@ export const DICTIONARY_STATUS = [
     value: true,
     title: "Активен",
     color: "#73A839",
-    icon: "mdi-check-circle",
+    icon: "mdi-check-circle"
   },
   {
     value: false,
     title: "Неактивен",
     icon: "mdi-close-circle",
-    color: "#d8101c",
-  },
+    color: "#d8101c"
+  }
 ]
 
 export const WEEK_DAYS = [
@@ -329,5 +345,64 @@ export const WEEK_DAYS = [
   { title: "Четверг", value: "THURSDAY" },
   { title: "Пятница", value: "FRIDAY" },
   { title: "Суббота", value: "SATURDAY" },
-  { title: "Воскресенье", value: "SUNDAY" },
+  { title: "Воскресенье", value: "SUNDAY" }
+]
+
+export const CORRECT_INSURANCES = [
+  {
+    value: true,
+    title: "Корректна",
+    color: "#73A839",
+    icon: "mdi-check-circle"
+  },
+  {
+    value: false,
+    title: "Некорректна",
+    icon: "mdi-close-circle",
+    color: "#d8101c"
+  }
+]
+
+export const CORRECT_CONTRACT = [
+  {
+    value: true,
+    title: "Корректен",
+    color: "#73A839",
+    icon: "mdi-check-circle"
+  },
+  {
+    value: false,
+    title: "Некорректен",
+    icon: "mdi-close-circle",
+    color: "#d8101c"
+  }
+]
+
+export const CORRECT_REPORT = [
+  {
+    value: true,
+    title: "Корректен",
+    color: "#73A839",
+    icon: "mdi-check-circle"
+  },
+  {
+    value: false,
+    title: "Некорректен",
+    icon: "mdi-close-circle",
+    color: "#d8101c"
+  }
+]
+export const CONFIRM_MEMBER_DO_INSURANCES = [
+  {
+    value: true,
+    title: "Да",
+    color: "#73A839",
+    icon: "mdi-check-circle"
+  },
+  {
+    value: false,
+    title: "Нет",
+    icon: "mdi-close-circle",
+    color: "#d8101c"
+  }
 ]

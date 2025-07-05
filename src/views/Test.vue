@@ -63,8 +63,6 @@ const setImage = (e) => {
     };
 
     reader.readAsDataURL(file);
-
-    console.log("cropper.value", cropper.value)
   } else {
     alert('Sorry, FileReader API not supported');
   }
@@ -72,7 +70,6 @@ const setImage = (e) => {
 
 const handleSubmit = () => {
   const data = cropper.value.getCroppedCanvas().toDataURL()
-  console.log("data", data)
 }
 
 watch(imgSrc, (newValue) => {

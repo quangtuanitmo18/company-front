@@ -32,7 +32,7 @@ const defaultFilters = () => {
     {
       filterBy: "packageType",
       value: null,
-      label: "Тип пакета",
+      label: "Тип рассылки",
       type: FILTER_TYPE_EQ_CHECK,
       selectValues: "",
       api: typePackageDictionaryFilterMailer

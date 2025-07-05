@@ -1,6 +1,12 @@
 import store from "@/store"
 
 export const PERMISSIONS = {
+  AUTH: {
+    SHOW_USER: "ROLE_AUTH_SHOW_USER",
+    EDIT_USER: "ROLE_AUTH_EDIT_USER",
+    SHOW_ROLE: "ROLE_AUTH_SHOW_ROLE",
+    EDIT_ROLE: "ROLE_AUTH_EDIT_ROLE"
+  },
   EMPLOYEE: {
     EDIT: "ROLE_EMPLOYEES_EDIT",
     SHOW: "ROLE_EMPLOYEES_SHOW",

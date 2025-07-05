@@ -76,11 +76,11 @@ import {
 } from "@/service/mailer/packageService"
 import { FILTER_TYPE_DATE, FILTER_TYPE_EQ_WITH_SEARCH, FILTER_TYPE_LIKE } from "@/utils/dictionary"
 import { downloadFile } from "@/utils/files"
+import { hasPermission, PERMISSIONS } from "@/utils/permission.js"
 import { computed, ref, shallowRef, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { useStore } from "vuex"
 import PackageMemberDetailModal from "./PackageMemberDetailModal.vue"
-import { hasPermission, PERMISSIONS } from "@/utils/Permission"
 
 const props = defineProps({
   data: {
@@ -183,19 +183,6 @@ const columns = [
     }
   },
   {
-    heading: "Статус",
-    value: "packageMemberStatus",
-    subValue: "statusName",
-    sortOptions: {
-      sortable: false
-    },
-    filterOptions: {
-      filterByValue: "packageMemberStatus",
-      filterType: FILTER_TYPE_EQ_WITH_SEARCH,
-      filterApi: memberStatusPackageDictionaryFilterMailer
-    }
-  },
-  {
     heading: "Дата создания",
     value: "dttmCreated",
     sortOptions: {
@@ -226,6 +213,19 @@ const columns = [
     filterOptions: {
       filterByValue: "dttmSendEmail",
       filterType: FILTER_TYPE_DATE
+    }
+  },
+  {
+    heading: "Статус",
+    value: "packageMemberStatus",
+    subValue: "statusName",
+    sortOptions: {
+      sortable: false
+    },
+    filterOptions: {
+      filterByValue: "packageMemberStatus",
+      filterType: FILTER_TYPE_EQ_WITH_SEARCH,
+      filterApi: memberStatusPackageDictionaryFilterMailer
     }
   },
   {

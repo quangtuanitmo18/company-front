@@ -1,7 +1,6 @@
 export const printErrors = (validationErrors) => {
     const errorArray = []
     for (const key in validationErrors){
-        console.log(key + '-' +  validationErrors[key])
         if(typeof validationErrors[key] === "string"){
             errorArray.push(validationErrors[key])
         }else if(key === "actions" || key === "checks" || key === "insurances"){

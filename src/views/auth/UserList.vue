@@ -101,7 +101,7 @@ const columns = [
     },
   },
   {
-    heading: 'Email',
+    heading: 'Почта',
     value: 'email',
     sortOptions: {
       sortable: true,

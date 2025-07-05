@@ -82,12 +82,12 @@ const configTabs = [
   },
   {
     value: "mailStatus",
-    title: "Статусы отправки писем",
+    title: "Отчёт по статусам отправки писем",
     component: PackageStatusMailing
   },
   {
     value: "deliveryStatus",
-    title: "Статусы отправки пакета",
+    title: "Отчёт по статусам отправки пакета",
     component: PackageStatusDelivery
   }
 ]

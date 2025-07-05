@@ -5,50 +5,54 @@
       <v-row>
         <v-col cols="12" md="6">
           <v-select
-              variant="underlined"
-              v-model="role.project"
-              :rules="[(v) => !!v || 'Это обязательное поле.']"
-              :items="projectSelect"
-              label="Проект"
+            variant="underlined"
+            v-model="role.project"
+            :rules="[v => !!v || 'Это обязательное поле.']"
+            :items="projectSelect"
+            label="Проект"
           ></v-select>
         </v-col>
         <v-col cols="12" md="6">
           <v-text-field
-              variant="underlined"
-              v-model="role.title"
-              :rules="[v =>  !!v || 'Это обязательное поле.']"
-              label="Роль"
+            variant="underlined"
+            v-model="role.title"
+            :rules="[v => !!v || 'Это обязательное поле.']"
+            label="Роль"
           ></v-text-field>
         </v-col>
         <v-col cols="12" md="12">
           <v-text-field
-              variant="underlined"
-              v-model="role.description"
-              label="Описание"
+            variant="underlined"
+            v-model="role.description"
+            label="Описание"
           ></v-text-field>
         </v-col>
       </v-row>
+
+      <v-row>
+        <v-col cols="12" md="12">
+          <v-checkbox v-model="role.isDefault" label="По умолчанию"></v-checkbox>
+        </v-col>
+      </v-row>
+
       <div v-if="notion" class="form-notion mt-4">
-        <p class="form-notion-text" :class="{[notion.status]: true}">{{ notion.text }}</p>
+        <p class="form-notion-text" :class="{ [notion.status]: true }">{{ notion.text }}</p>
       </div>
     </v-form>
     <template v-slot:action>
-      <btn-primary class="ml-2" :loading="loadingSave" @click="handleSubmit">
-        Создать
-      </btn-primary>
+      <btn-primary class="ml-2" :loading="loadingSave" @click="handleSubmit"> Создать </btn-primary>
     </template>
   </card-with-actions>
 </template>
 
 <script setup>
-
-import AppPageTitle from "@/layouts/AppPageTitle.vue";
-import CardWithActions from "@/components/CardWithActions.vue";
-import { useRouter, useRoute } from "vue-router";
-import {onMounted, ref} from "vue";
-import {userRoleCreate} from "@/service/auth/users/userService.js";
-import {BtnPrimary} from "@/components/buttons/index.js";
-import {projectList} from "@/service/auth/users/projectService.js";
+import { BtnPrimary } from "@/components/buttons/index.js"
+import CardWithActions from "@/components/CardWithActions.vue"
+import AppPageTitle from "@/layouts/AppPageTitle.vue"
+import { projectList } from "@/service/auth/users/projectService.js"
+import { userRoleCreate } from "@/service/auth/users/userService.js"
+import { onMounted, ref } from "vue"
+import { useRoute, useRouter } from "vue-router"
 
 const router = useRouter()
 const route = useRoute()
@@ -58,6 +62,7 @@ const role = ref({
   title: "",
   description: "",
   enabled: false,
+  isDefault: true
 })
 
 const form = ref(null)
@@ -72,26 +77,30 @@ const handleBack = () => {
 const handleSubmit = async () => {
   const { valid } = await form.value.validate()
 
-  if(!valid) return
+  if (!valid) return
 
   loadingSave.value = true
-  userRoleCreate(role.value).then(res => {
-    role.value = res.role
-    router.push("/auth/role/update/" + res.role.id)
-  }).then(res => {
-    notion.value = {
-      status: "success",
-      text: "Роль успешно создан."
-    }
-    role.value = res.role
-  }).catch(err => {
-    notion.value = {
-      status: "error",
-      text: err
-    }
-  }).finally(() => {
-    loadingSave.value = false
-  })
+  userRoleCreate(role.value)
+    .then(res => {
+      role.value = res.role
+      router.push("/auth/role/update/" + res.role.id)
+    })
+    .then(res => {
+      notion.value = {
+        status: "success",
+        text: "Роль успешно создан."
+      }
+      role.value = res.role
+    })
+    .catch(err => {
+      notion.value = {
+        status: "error",
+        text: err
+      }
+    })
+    .finally(() => {
+      loadingSave.value = false
+    })
 }
 
 const configActions = [
@@ -105,12 +114,10 @@ onMounted(() => {
   projectList().then(res => {
     projectSelect.value = res.items.map(item => ({
       value: item.id,
-      title: item.title,
+      title: item.title
     }))
   })
 })
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

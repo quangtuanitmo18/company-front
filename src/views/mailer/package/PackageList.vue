@@ -39,23 +39,19 @@
 </template>
 
 <script setup>
-import { computed, ref, shallowRef, watch } from "vue"
-import {
-  packageList,
-  statusPackageDictionaryFilterMailer,
-  typePackageDictionaryFilterMailer
-} from "@/service/mailer/packageService.js"
-import AppPageTitle from "@/layouts/AppPageTitle.vue"
 import { TableWithFilter } from "@/components/index.js"
+import AppPageTitle from "@/layouts/AppPageTitle.vue"
+import { packageList, typePackageDictionaryFilterMailer } from "@/service/mailer/packageService.js"
+import { sroOrgListForFilterMailer } from "@/service/ossa/clients/sroOrganizationService.js"
 import {
   FILTER_TYPE_DATE,
   FILTER_TYPE_EQ_MULTI_WITH_SEARCH,
   FILTER_TYPE_EQ_WITH_SEARCH
 } from "@/utils/dictionary.js"
-import { useStore } from "vuex"
-import { sroOrgListForFilterMailer } from "@/service/ossa/clients/sroOrganizationService.js"
+import { hasPermission, PERMISSIONS } from "@/utils/permission.js"
+import { computed, ref, shallowRef, watch } from "vue"
 import { useRouter } from "vue-router"
-import { hasPermission, PERMISSIONS } from "@/utils/Permission"
+import { useStore } from "vuex"
 
 const router = useRouter()
 const page = ref(1)
@@ -83,6 +79,28 @@ const countFilters = computed(() => Object.keys(filters.value).length)
 
 const columns = [
   {
+    heading: "",
+    value: "",
+    sortOptions: {
+      sortable: false
+    },
+    filterOptions: {}
+  },
+  {
+    heading: "Организация",
+    value: "sroOrganization",
+    subValue: "title",
+    sortOptions: {
+      sortable: false
+    },
+    filterOptions: {
+      filterByValue: "sro",
+      filterType: FILTER_TYPE_EQ_MULTI_WITH_SEARCH,
+      filterApi: sroOrgListForFilterMailer
+    },
+    align: "left"
+  },
+  {
     heading: "Тип",
     value: "packageType",
     subValue: "typeName",
@@ -93,6 +111,18 @@ const columns = [
       filterByValue: "packageType",
       filterType: FILTER_TYPE_EQ_WITH_SEARCH,
       filterApi: typePackageDictionaryFilterMailer
+    },
+    align: "left"
+  },
+  {
+    heading: "Дата создания",
+    value: "dttmCreated",
+    sortOptions: {
+      sortable: false
+    },
+    filterOptions: {
+      filterByValue: "dttmCreated",
+      filterType: FILTER_TYPE_DATE
     }
   },
   {
@@ -106,30 +136,6 @@ const columns = [
       // filterByValue: 'package_status',
       // filterType: FILTER_TYPE_EQ_WITH_SEARCH,
       // filterApi: statusPackageDictionaryFilterMailer
-    }
-  },
-  {
-    heading: "Организация",
-    value: "sroOrganization",
-    subValue: "title",
-    sortOptions: {
-      sortable: false
-    },
-    filterOptions: {
-      filterByValue: "sro",
-      filterType: FILTER_TYPE_EQ_MULTI_WITH_SEARCH,
-      filterApi: sroOrgListForFilterMailer
-    }
-  },
-  {
-    heading: "Дата создания",
-    value: "dttmCreated",
-    sortOptions: {
-      sortable: false
-    },
-    filterOptions: {
-      filterByValue: "dttmCreated",
-      filterType: FILTER_TYPE_DATE
     }
   }
 ]

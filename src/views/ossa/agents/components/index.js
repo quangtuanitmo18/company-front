@@ -1,0 +1,9 @@
+export { default as DetailCard } from "./DetailCard.vue";
+export { default as EventsDo } from "./EventsDo.vue";
+export { default as CardContacts } from "./CardContacts.vue";
+export { default as Insurance } from "./Insurance.vue";
+export { default as Right } from "./Right.vue";
+export { default as ExtraData } from "./ExtraData.vue";
+export { default as Checks } from "./Checks.vue";
+export { default as Contracts } from "./Contracts.vue";
+export { default as Reports } from "./Reports.vue";

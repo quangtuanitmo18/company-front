@@ -25,8 +25,8 @@
         <template v-if="!loadingModal">
           <div class="d-flex flex-column">
             <div class="d-flex">
-              <p class="mr-1">Наименование:</p>
-              <p class="mr-4">{{currentInfo?.shortname}}</p>
+              <p class="mr-1">Наименование: </p>
+              <p class="mr-4">{{currentInfo?.fullname}}</p>
             </div>
             <div class="d-flex">
               <p class="mr-1y">ИНН:</p>

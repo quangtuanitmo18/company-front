@@ -4,10 +4,18 @@
       <v-expansion-panel>
         <v-expansion-panel-title class="panel-header">
           <template v-slot:default="{ expanded }">
-            <h4 class="panel-section-header">
-              <v-icon icon="mdi-menu-down"></v-icon>
-              <span class="panel-section-header-text">{{ sro.title }}</span>
-            </h4>
+            <div class="d-flex justify-space-between align-center w-100">
+              <h4 class="panel-section-header">
+                <v-icon icon="mdi-menu-down"></v-icon>
+                <span class="panel-section-header-text">{{ sro.title }}</span>
+              </h4>
+              <p class="panel-section-header-description">
+                Количество рассылок:
+                <span style="color: #ff5722" class="font-weight-bold">{{
+                  sroSchedule[sro.id]?.data_header?.count || "нет"
+                }}</span>
+              </p>
+            </div>
           </template>
         </v-expansion-panel-title>
         <v-expansion-panel-text>
@@ -27,14 +35,14 @@
               <v-table v-if="sroSchedule[sro.id]" class="table">
                 <thead>
                   <tr>
-                    <th>SRO</th>
-                    <th>Type</th>
-                    <th>Frequency</th>
-                    <th>Last Execute</th>
-                    <th>From</th>
-                    <th>Until</th>
-                    <th>Count</th>
-                    <th>Nearest tasks</th>
+                    <th class="text-center">CРО</th>
+                    <th class="text-center">Тип</th>
+                    <th class="text-center">Периодичность</th>
+                    <th class="text-center">Последнее отправление</th>
+                    <th class="text-center">Дата начала</th>
+                    <th class="text-center">Дата окончания</th>
+                    <th class="text-center">Отправлено</th>
+                    <th class="text-center">Ближайшие отправки</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -46,11 +54,11 @@
                     <td>{{ row.sroOrganization.title }}</td>
                     <td>{{ row.package_type.package_type_name }}</td>
                     <td>{{ row.schedule_frequency_type.schedule_frequency_type_name }}</td>
-                    <td>{{ shortDateHourFormat(row.dttmLastExecuted) }}</td>
-                    <td>{{ shortDateHourFormat(row.scheduleFromDttm) }}</td>
-                    <td>{{ shortDateHourFormat(row.scheduleUntilDttm) }}</td>
-                    <td>{{ row.countLaunches }}</td>
-                    <td>
+                    <td class="text-center">{{ shortDateHourFormat(row.dttmLastExecuted) }}</td>
+                    <td class="text-center">{{ shortDateHourFormat(row.scheduleFromDttm) }}</td>
+                    <td class="text-center">{{ shortDateHourFormat(row.scheduleUntilDttm) }}</td>
+                    <td class="text-center">{{ row.countLaunches }}</td>
+                    <td class="text-center">
                       <v-btn
                         class="icon-color-primary"
                         @click.stop="handleNearestTask(row)"
@@ -78,9 +86,9 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue"
 import { tasksSro, thressNerearestTasks } from "@/service/mailer/packageScheduleService.js"
 import { shortDateHourFormat } from "@/utils/format.js"
+import { ref, watch } from "vue"
 import { useRouter } from "vue-router"
 
 import ModalNearestTasks from "./ModalNearestTasks.vue"
@@ -121,7 +129,6 @@ const handleNearestTask = async item => {
   isLoadingModalTaskNearest.value = true
   try {
     const threeNearestTasks = await thressNerearestTasks({ id: item.id })
-    console.log("threeNearestTasks", threeNearestTasks)
     dataTaskNearest.value = threeNearestTasks.next_starts
   } catch (error) {
     console.error("Error fetching nearest tasks:", error)

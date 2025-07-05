@@ -1,51 +1,52 @@
 <template>
   <app-page-title iconClassname="mdi-check" title="Детали роли"></app-page-title>
-  <card-with-actions :title="`${role?.title}`" :subtitle="`${role?.description}`" :actions="configActions">
+  <card-with-actions
+    :title="`${role?.title}`"
+    :subtitle="`${role?.description}`"
+    :actions="configActions"
+  >
     <v-table class="mt-4 table-view">
       <tbody>
-      <tr>
-        <td>Роль</td>
-        <td>{{ role.title }}</td>
-      </tr>
-      <tr>
-        <td>Описание</td>
-        <td>{{ role.description }}</td>
-      </tr>
-      <tr>
-        <td>Статус</td>
-        <td>{{ role.enabled ? "Активна" : "Неактивна" }}</td>
-      </tr>
-      <tr>
-        <td>Проект</td>
-        <td>{{ role.project ? role.project.title : '' }}</td>
-      </tr>
-      <tr>
-        <td>Действие</td>
-        <td>
-          <p v-if="role.actions" v-for="action in role.actions">
-            {{ action.title }}
-          </p>
-        </td>
-      </tr>
+        <tr>
+          <td>Роль</td>
+          <td>{{ role.title }}</td>
+        </tr>
+        <tr>
+          <td>Описание</td>
+          <td>{{ role.description }}</td>
+        </tr>
+        <tr>
+          <td>Статус</td>
+          <td>{{ role.enabled ? "Активна" : "Неактивна" }}</td>
+        </tr>
+        <tr>
+          <td>По умолчанию</td>
+          <td>{{ role.isDefault ? "Да" : "Нет" }}</td>
+        </tr>
+        <tr>
+          <td>Проект</td>
+          <td>{{ role.project ? role.project.title : "" }}</td>
+        </tr>
+        <tr>
+          <td>Действие</td>
+          <td>
+            <p v-if="role.actions" v-for="action in role.actions">
+              {{ action.title }}
+            </p>
+          </td>
+        </tr>
       </tbody>
     </v-table>
   </card-with-actions>
 </template>
 
 <script setup>
+import CardWithActions from "@/components/CardWithActions.vue"
+import AppPageTitle from "@/layouts/AppPageTitle.vue"
 
-import AppPageTitle from "@/layouts/AppPageTitle.vue";
-import CardWithActions from "@/components/CardWithActions.vue";
-
-import { useRouter, useRoute } from "vue-router";
-import {onMounted, ref, shallowRef} from "vue";
-import {
-  userBlock,
-  userRoleBlock,
-  userRoleDetail,
-  userRoleUnblock,
-  userUnblock
-} from "@/service/auth/users/userService.js";
+import { userRoleDetail } from "@/service/auth/users/userService.js"
+import { onMounted, shallowRef } from "vue"
+import { useRoute, useRouter } from "vue-router"
 
 const router = useRouter()
 const route = useRoute()
@@ -79,6 +80,4 @@ onMounted(() => {
 })
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>
