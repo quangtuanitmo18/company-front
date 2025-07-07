@@ -6,10 +6,16 @@
       @fetchDateRange="fetchEventsForRange"
       :events="events"
       :currentView="currentView"
-      @updateCurrentView="currentView = $event"
+      @update:currentView="currentView = $event"
       :canChangeViewMode
+      :isLoadingEvents="isLoadingEvents"
     ></calendar-custom>
-    <div :class="['filter-absolute', { 'filter-absolute--year': currentView === 'year' }]">
+    <div
+      :class="[
+        'filter-absolute',
+        { 'filter-absolute--year': currentView === 'year' || currentView === 'graphic' }
+      ]"
+    >
       <Filters
         :countFilters="countFilters"
         :filters="innerFilters"
@@ -50,6 +56,7 @@ const innerFilters = ref(defaultFilters())
 const filters = ref({})
 const selectedDate = ref(getDateNow())
 const events = ref([])
+const isLoadingEvents = ref(false)
 const currentView = ref("month-grid") // Track the current view type
 
 const canChangeViewMode = ref(true)
@@ -84,7 +91,7 @@ const handleClearFilter = () => {
 const fetchEventsForRange = async ({ start = null, end = null, viewType = currentView.value }) => {
   // If start/end not provided, calculate them based on the current view and selected date
   if (!start || !end) {
-    if (viewType === "year") {
+    if (viewType === "year" || viewType === "graphic") {
       const startDate = startOfYear(new Date(selectedDate.value))
       const endDate = endOfYear(new Date(selectedDate.value))
       start = format(startDate, "yyyy-MM-dd")
@@ -99,10 +106,10 @@ const fetchEventsForRange = async ({ start = null, end = null, viewType = curren
   // Clear events immediately when switching view types to prevent showing incorrect data
   if (currentView.value !== viewType) {
     events.value = [] // Clear events when view type changes
-    currentView.value = viewType // Store the current view type
   }
 
   try {
+    isLoadingEvents.value = true // Set loading state
     // Make API call with the specified date range
     const res = await calendarList({
       filters: filters.value,
@@ -133,12 +140,14 @@ const fetchEventsForRange = async ({ start = null, end = null, viewType = curren
     })
   } catch (error) {
     console.error("Error fetching events for range:", error)
+  } finally {
+    isLoadingEvents.value = false
   }
 }
 
 // Replace the existing watch with this simplified version
 watch(
-  [selectedDate, filters, currentView],
+  [selectedDate, filters],
   () => {
     console.log("watch selectedDate, selectedDate", selectedDate.value)
     // No need to check the view type - the fetchEventsForRange function handles that

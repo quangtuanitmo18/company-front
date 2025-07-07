@@ -2,7 +2,7 @@
   <div class="calendar-container">
     <div v-if="canChangeViewMode" class="calendar-header">
       <v-select
-        v-if="currentView === 'year'"
+        v-if="currentView === 'year' || currentView === 'graphic'"
         label="Тип календаря"
         :model-value="currentView"
         :items="viewOptions"
@@ -19,7 +19,11 @@
     </div>
 
     <!-- Schedule-X Calendar -->
-    <ScheduleXCalendar v-if="currentView !== 'year'" :calendar-app="calendarApp">
+    <ScheduleXCalendar
+      v-if="currentView !== 'year' && currentView !== 'graphic'"
+      :events="events"
+      :calendar-app="calendarApp"
+    >
       <template v-if="canChangeViewMode" #headerContentRightPrepend="{ $app }">
         <v-select
           label="Тип календаря"
@@ -41,9 +45,20 @@
 
     <!-- Year View Calendar -->
     <YearlyCalendar
-      v-else
+      v-else-if="currentView === 'year'"
       :events="events"
       :selected-date="selectedDate"
+      :isLoadingEvents="isLoadingEvents"
+      @update-date="date => emit('updateDate', date)"
+      @year-changed="handleYearChanged"
+    />
+
+    <!-- Graphic View Calendar -->
+    <GraphicTableCalendar
+      v-else-if="currentView === 'graphic'"
+      :events="events"
+      :selectedDate="selectedDate"
+      :isLoadingEvents="isLoadingEvents"
       @update-date="date => emit('updateDate', date)"
       @year-changed="handleYearChanged"
     />
@@ -51,6 +66,7 @@
 </template>
 <script setup>
 import YearlyCalendar from "@/components/scheduleCalendar/YearlyCalendar.vue"
+
 import {
   createCalendar,
   createViewDay,
@@ -65,6 +81,7 @@ import { ScheduleXCalendar } from "@schedule-x/vue"
 import { endOfMonth, endOfYear, format, startOfMonth, startOfYear } from "date-fns"
 import { computed, watch } from "vue"
 import { useStore } from "vuex"
+import GraphicTableCalendar from "./GraphicTableCalendar.vue"
 
 const store = useStore()
 
@@ -73,11 +90,12 @@ const eventsModalPlugin = createEventModalPlugin()
 const calendarControls = createCalendarControlsPlugin()
 
 const emit = defineEmits(["updateDate", "fetchDateRange", "update:currentView"])
-const { canChangeViewMode, selectedDate, currentView, events } = defineProps([
+const { canChangeViewMode, selectedDate, currentView, events, isLoadingEvents } = defineProps([
   "canChangeViewMode",
   "selectedDate",
   "currentView",
-  "events"
+  "events",
+  "isLoadingEvents"
 ])
 
 const calendars = computed(() => store.getters["settings/calendars"])
@@ -92,7 +110,8 @@ const viewOptions = [
   { text: "Год", value: "year" },
 
   { text: "Месяц", value: "month-grid" },
-  { text: "Месяц с повесткой", value: "month-agenda" }
+  { text: "Месяц с повесткой", value: "month-agenda" },
+  { text: "График", value: "graphic" }
 ]
 
 // Do not use a ref here, as the calendar instance is not reactive, and doing so might cause issues
@@ -150,57 +169,44 @@ const calendarApp = createCalendar({
 })
 
 const handleViewChange = viewName => {
-  if (viewName === "year") {
-    emit("update:currentView", viewName)
-    // Year view is handled by separate component
+  // Chỉ emit sự kiện update:currentView, không gọi trực tiếp calendarControls.setView
+  emit("update:currentView", viewName)
 
-    // Get the full year start and end dates based on the current selected date
+  // Tính toán range để fetch data
+  if (viewName === "year" || viewName === "graphic") {
+    // Logic hiện tại cho year và graphic
     const startDate = startOfYear(new Date(selectedDate))
     const endDate = endOfYear(new Date(selectedDate))
-
-    // Format dates as ISO strings (YYYY-MM-DD)
     const formattedStart = format(startDate, "yyyy-MM-dd")
     const formattedEnd = format(endDate, "yyyy-MM-dd")
 
-    // Request the parent component to fetch data for the entire year
     emit("fetchDateRange", {
       start: formattedStart,
       end: formattedEnd,
       viewType: viewName
     })
   } else {
-    // Get the current year from the selectedDate
+    // Logic hiện tại cho các view khác
     const currentYear = new Date(selectedDate).getFullYear()
     const currentMonth = new Date(selectedDate).getMonth()
-
-    // Create a date for the same month but in the current year
     const currentYearDate = new Date()
     currentYearDate.setFullYear(currentYear)
     currentYearDate.setMonth(currentMonth)
 
-    // Format it and emit it to update the parent's selectedDate
+    // Chỉ emit updateDate và fetchDateRange, không gọi calendarControls.setView
     const formattedDate = format(currentYearDate, "yyyy-MM-dd")
     emit("updateDate", formattedDate)
 
-    // Get start/end of month for the current year/month
     const startDate = startOfMonth(currentYearDate)
     const endDate = endOfMonth(currentYearDate)
-
-    // Format dates as ISO strings (YYYY-MM-DD)
     const formattedStart = format(startDate, "yyyy-MM-dd")
     const formattedEnd = format(endDate, "yyyy-MM-dd")
 
-    // Schedule-X views - keep existing logic
-    emit("update:currentView", viewName)
-
-    // Request the parent component to fetch data for the selected month
     emit("fetchDateRange", {
       start: formattedStart,
       end: formattedEnd,
       viewType: viewName
     })
-
-    calendarControls.setView(viewName)
   }
 }
 // Update the changeYear function in case you're handling year changes directly
@@ -213,10 +219,11 @@ const handleYearChanged = ({ year, startDate, endDate }) => {
   emit("fetchDateRange", {
     start: formattedStart,
     end: formattedEnd,
-    viewType: "year"
+    viewType: currentView
   })
 }
 
+// schedule-x
 watch(
   () => events,
 
@@ -231,15 +238,18 @@ watch(
     calendarControls.setCalendars(newValue)
   }
 )
+
+// Tách thành hai watcher riêng biệt để dễ theo dõi
 watch(
-  () => selectedDate,
-  newDate => {
-    if (newDate && calendarApp) {
+  () => currentView,
+  newView => {
+    if (newView && calendarApp && newView !== "year" && newView !== "graphic") {
       try {
-        // When selectedDate changes from year view, update Schedule-X calendar date
-        calendarControls.setDate(newDate)
+        calendarControls.setDate(selectedDate)
+
+        calendarControls.setView(newView)
       } catch (err) {
-        console.error("Error updating calendar date:", err)
+        console.error("Error setting view:", err)
       }
     }
   }

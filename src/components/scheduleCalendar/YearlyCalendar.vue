@@ -7,7 +7,7 @@
     </div>
 
     <Calendar
-      v-if="!isYearChanging"
+      v-if="!isYearChanging && !props.isLoadingEvents"
       locale="ru"
       :key="currentYear"
       :attributes="calendarEvents"
@@ -45,10 +45,12 @@
             </span>
           </div>
         </div>
-        <div v-if="calendarEvents.length === 0" class="no-events">Нет событий</div>
+        <div v-if="calendarEvents.length == 0 && !props.isLoadingEvents" class="no-events">
+          Нет событий
+        </div>
       </template>
     </Calendar>
-    <template v-if="isYearChanging">
+    <template v-if="isYearChanging || props.isLoadingEvents">
       <div style="clear: both"></div>
       <div class="text-center pb-10">
         <v-progress-circular indeterminate class="color-primary" />
@@ -74,6 +76,9 @@ const props = defineProps({
   selectedDate: {
     type: String,
     default: () => new Date().toISOString().split("T")[0]
+  },
+  isLoadingEvents: {
+    type: Boolean
   }
 })
 
@@ -160,8 +165,6 @@ const calendarEvents = computed(() => {
     return [] // Don't display events from wrong year
   }
 
-  console.log(props.events, "events")
-
   // Create array to hold attributes
   const attributes = []
 
@@ -218,7 +221,6 @@ const calendarEvents = computed(() => {
     }
   })
 
-  console.log(attributes, "attributes")
   return attributes
 })
 
@@ -239,7 +241,6 @@ const changeYear = increment => {
     startDate: format(yearStart.value, "yyyy-MM-dd"),
     endDate: format(yearEnd.value, "yyyy-MM-dd")
   })
-  console.log(formattedDate, "formattedDate")
   // Emit the formatted date string to update parent's selectedDate
   emit("update-date", formattedDate)
 }
@@ -351,7 +352,7 @@ watch(currentYear, newYear => {
 /* Calendar container and navigation */
 .yearly-calendar-container {
   height: 100%;
-  padding: 16px;
+  padding-inline: 16px;
   display: flex;
   flex-direction: column;
   overflow: auto;
